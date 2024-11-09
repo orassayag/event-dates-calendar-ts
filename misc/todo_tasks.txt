@@ -1,0 +1,70 @@
+=========
+REMEMBER!
+=========
+Each time you change the logic / update NPM package version, do the following steps:
+1. Perform a backup before any change has been made, by running in the terminal 'npm run backup' or manually to the backups directory.
+2. After the change, check that everything works OK.
+3. Keep the maintenance - Every change you do - Make sure to update in this document if needed.
+4. Do commit + push on Git project repository.
+5. Keep the backup update - Every change you do - Update in iOmega (each couple of days do backup there).
+=================================
+
+ToDo tasks:
+===========
+
+-Convert all the tasks here into English.
+-Add new instructions of how to run and what to input step by step in README.md (once done).
+-Copy the LICENSE + CONTRIBUTING.md files.
+-Rebuild this project - More simpler - In TypeScript.
+-In Scan mode search for more than one break lines.
+-Convert all birthdays, death dates, and marriage dates into array on the doc, and implement it by each day.
+-For each future event there is an empty break line space in the end.
+-Auto sync future events - Part 2:
+-1. All event that not equal to the target year.
+-2. The events that don't match, keep them there.
+-3. Write the entire "future events" section with left events.
+-In the scan command - Check for duplicate number days count.
+-In the fix command - Fix duplicate days count.
+-Lower priority:
+-Add the details of the new file after: ===CREATE TEXT FILE===:
+===TOTAL EVENTS: 3,443===
+===FILE SIZE: 154KB | LINES COUNT: 9,330===
+-After ===EXIT: FINISH=== add ===DIST: event-dates-2023 (102KB)===.
+-Change the scan function name to "validate document".
+-It will contains to steps:
+1. To scan for not ending with dot.
+2. Add scan option for more than 1 line break.
+3. Scan for duplicate days counts or missing days counts from special file.
+-Solve the empty line space after ===EXIT: FINISH===.
+-Update the file in the examples folder.
+-Add search options in all event dates documents.
+1. Insert the path of the event calendar dates files.
+2. Scan in all files for a search key entered by, for example "npm run search".
+3. It will display all the files and number lines of this, for example:
+event-dates-2021.txt | Line 324 | test 1.
+event-dates-2022.txt | Line 325 | test 2.
+
+-Long term tasks:
+-Send Whatsapp message to myself with the relevant date each day.
+
+-Events to add to the events calender:
+-Once a month to update programs in the Lenovo PC.
+-Once a half year copy the Or folder to the iOmega.
+-Once a 3 months - Download papers from: Bank, HotMobile, Clalit.
+-Each end of year ask for Google backup.
+-Also remove empty break line space on the first day of the year:
+-Check that in the first day of the year we scheduled teeth cleaner and dentists.
+-משימה לevents calander - להוסיף מספרי נרות בחנוכה.
+-Add for my birthdate - אני - יום הולדת לאור אסייג (38).
+-בסופ"ש: להוסיף בEvent Calander שצריך להחליף מברשת שיניים כל 3 חודשים.
+-להוסיף בEvent Dates לבדוק ממתי יום המשפחה. + להשלים ממתי יום המשפחה.
+-להוסיף בEvent Dates כל יום אחרון לחודש להוריד חשבוניות האתר של בנק הפועלים / Hot Mobile / כללית.
+
+
+-Previous version bugs:
+-End year tasks not working.
+-To Fix the weekend and alter weekend - The alt weekend need to add only additional tasks.
+-Fix event which will not start with (0).
+-When it right on the specific day the reminder like "-תוקף אחריות מקלדת ועכבר מKSP עד: 23/04/2023" it missing dot in the end.
+-A lot of places missing dot in the end.
+
