@@ -11,7 +11,16 @@ Each time you change the logic / update NPM package version, do the following st
 
 ToDo tasks:
 ===========
-
+-במשימה של events dates לעשות כמה משימות שאפשר + לוודא שאפשר להפיק מסמך חדש.
+-Continue with events-calendar on the PC
+-Try to finish the refactor of the events calendar dates.
+-Add vacation days on events calendar for this time.
+-Sync service - Bring archive days and sync it into an existing document.
+-Do a script which search for duplicate / missing counters.
+-Do a script which scan which each line ends with ". *".
+-Do a script which scan for duplicate empty lines.
+-If have time - Add future task to send SMS each morning.
+-On the event calendar dates task - Future task - Send SMS each morning.
 -Convert all the tasks here into English.
 -Add new instructions of how to run and what to input step by step in README.md (once done).
 -Copy the LICENSE + CONTRIBUTING.md files.
