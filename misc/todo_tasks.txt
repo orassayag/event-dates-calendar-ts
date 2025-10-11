@@ -9,6 +9,14 @@ Each time you change the logic / update NPM package version, do the following st
 5. Keep the backup update - Every change you do - Update in iOmega (each couple of days do backup there).
 =================================
 
+ToDo: tasks in the end:
+=======================
+-Add the content of the validation service.
+-Add description for each function.
+-Scan each throw error and add 1000000.
+-Add the LICENSE + README.md + INSTRUCTIONS.md files.
+-Update the description section in the package.json file.
+
 ToDo tasks:
 ===========
 -במשימה של events dates לעשות כמה משימות שאפשר + לוודא שאפשר להפיק מסמך חדש.
@@ -23,7 +31,6 @@ ToDo tasks:
 -On the event calendar dates task - Future task - Send SMS each morning.
 -Convert all the tasks here into English.
 -Add new instructions of how to run and what to input step by step in README.md (once done).
--Copy the LICENSE + CONTRIBUTING.md files.
 -Rebuild this project - More simpler - In TypeScript.
 -In Scan mode search for more than one break lines.
 -Convert all birthdays, death dates, and marriage dates into array on the doc, and implement it by each day.

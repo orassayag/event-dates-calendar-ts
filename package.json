@@ -14,13 +14,12 @@
     "calendar",
     "days"
   ],
-  "main": "src/scripts/renameScript.ts",
+  "main": "src/index.ts",
   "type": "module",
   "scripts": {
     "lint": "eslint src/**/*.{ts,tsx}",
-    "start": "tsx src/scripts/renameScript.ts",
-    "build": "tsc",
-    "dev": "tsx watch src/scripts/renameScript.ts"
+    "start": "tsx src/index.ts",
+    "build": "tsc"
   },
   "author": "Or Assayag <orassayag@gmail.com>",
   "contributors": [
@@ -31,6 +30,11 @@
     }
   ],
   "files": [
+    ".vscode",
+    "dist",
+    "misc",
+    "node_modules",
+    "sources",
     "src",
     ".gitignore",
     ".prettierrc",
