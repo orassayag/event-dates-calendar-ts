@@ -49,7 +49,7 @@
   "license": "MIT",
   "devDependencies": {
     "@eslint/js": "^9.37.0",
-    "@types/node": "^24.7.1",
+    "@types/node": "^24.7.2",
     "@typescript-eslint/eslint-plugin": "^8.46.0",
     "@typescript-eslint/parser": "^8.46.0",
     "eslint": "^9.37.0",
@@ -59,5 +59,8 @@
     "tsx": "^4.19.2",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.0"
+  },
+  "dependencies": {
+    "jsdom": "^27.0.0"
   }
 }
