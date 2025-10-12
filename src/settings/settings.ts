@@ -8,7 +8,7 @@ export const SETTINGS: Settings = {
     distPath: pathUtils.getPath('../../dist'),
   },
   create: {
-    targetYear: '2025',
+    targetYear: 2025,
     israelCalendarUrl: `https://calendar.2net.co.il/annual-calendar.aspx?year=${YEAR}`,
     unitedStateCalendarUrl: `https://www.timeanddate.com/holidays/us/${YEAR}`,
     distFileName: `event-dates-${YEAR}`,

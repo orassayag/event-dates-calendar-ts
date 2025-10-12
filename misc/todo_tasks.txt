@@ -12,6 +12,8 @@ Each time you change the logic / update NPM package version, do the following st
 ToDo: tasks in the end:
 =======================
 -Add the content of the validation service.
+-Do all the "ToDo" tasks around the project.
+-Compare all the code in 4 AI's.
 -Add description for each function.
 -Scan each throw error and add 1000000.
 -Add the LICENSE + README.md + INSTRUCTIONS.md files.

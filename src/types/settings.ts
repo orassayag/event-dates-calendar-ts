@@ -8,7 +8,7 @@ export interface GlobalSettings {
 
 export interface CreateScriptSettings {
   // Determine the year to create the event dates calendar for.
-  targetYear: string;
+  targetYear: number;
   // Determine the URL of which to take the calendar Hebrew events and holidays.
   israelCalendarUrl: string;
   // Determine the URL of which to take the calendar United States events and holidays.

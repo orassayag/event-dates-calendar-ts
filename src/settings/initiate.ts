@@ -8,13 +8,14 @@ export function initiate(): void {
     unitedStateCalendarUrl,
     distFileName,
   } = SETTINGS.create;
+  const targetYearString: string = targetYear.toString();
   SETTINGS.create.israelCalendarUrl = israelCalendarUrl.replace(
     YEAR,
-    targetYear
+    targetYearString
   );
   SETTINGS.create.unitedStateCalendarUrl = unitedStateCalendarUrl.replace(
     YEAR,
-    targetYear
+    targetYearString
   );
-  SETTINGS.create.distFileName = distFileName.replace(YEAR, targetYear);
+  SETTINGS.create.distFileName = distFileName.replace(YEAR, targetYearString);
 }

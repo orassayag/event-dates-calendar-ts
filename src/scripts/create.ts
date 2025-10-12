@@ -1,22 +1,27 @@
+import { DYNAMIC_EVENTS } from '../data';
 import {
   israelDayIdSelector,
   israelDayPersonalSelector,
   israelDaysListSelector,
   israelDaySpansSelector,
+  unitedStatesCellSelector,
+  unitedStatesRowSelector,
+  unitedStatesTimeStampDataSelector,
 } from '../separators';
 import { confirmationService, validationService } from '../services';
 import { SETTINGS } from '../settings';
-import { EventDate, EventType } from '../types';
-import { domUtils, logUtils, systemUtils } from '../utils';
+import { CalendarEvent, DynamicEvent, EventType } from '../types';
+import { domUtils, logUtils, systemUtils, timeUtils } from '../utils';
 
-const { israelCalendarUrl, targetYear } = SETTINGS.create;
+const { targetYear, israelCalendarUrl, unitedStateCalendarUrl } =
+  SETTINGS.create;
 
 class CreateScript {
   private lastId: number = 1;
 
   public async run(): Promise<void> {
     // Validate all settings are fit to the user needs.
-    await confirmationService.run('create');
+    // await confirmationService.run('create');
     // Validate the settings.
     await validationService.run();
     // Start the create calendar process.
@@ -26,8 +31,9 @@ class CreateScript {
   private async create(): Promise<void> {
     logUtils.logStatus('CREATE TEXT FILE');
     // First, get all the events from the Israel online calendar website.
-    const israelEvents: EventDate[] = await this.createIsraelEvents();
+    const ilEvents: CalendarEvent[] = await this.createIsraelEvents();
     // Second, get all the events from the United States online calendar website.
+    const usEvents: CalendarEvent[] = await this.createUnitedStatesEvents();
     // Third, complete the missing events from the calendar website.
     // In the next step, get all the static events from an event culture file.
     // Next, get all the events from the source event dates TXT file.
@@ -36,15 +42,15 @@ class CreateScript {
     systemUtils.exit('SCRIPT COMPLETE SUCCESSFULLY');
   }
 
-  private async createIsraelEvents(): Promise<EventDate[]> {
+  private async createIsraelEvents(): Promise<CalendarEvent[]> {
     const dom: any = await domUtils.getDomFromUrl(israelCalendarUrl);
     // Get all days DOM elements from the document.
     const daysList: NodeListOf<Element> = dom.window.document.querySelectorAll(
       israelDaysListSelector
     );
-    const events: EventDate[] = [];
+    const events: CalendarEvent[] = [];
     for (const day of daysList) {
-      const event: EventDate = this.createIsraelEvent(day);
+      const event: CalendarEvent = this.createIsraelEvent(day);
       if (event) {
         events.push(event);
       }
@@ -52,7 +58,7 @@ class CreateScript {
     return events;
   }
 
-  private createIsraelEvent(dayDom: Element): EventDate | undefined {
+  private createIsraelEvent(dayDom: Element): CalendarEvent | undefined {
     if (!dayDom.textContent.trim()) {
       return undefined;
     }
@@ -75,13 +81,63 @@ class CreateScript {
       day,
       month,
       year,
-      eventType: EventType.CALENDAR,
-      text: daySpansListDom[1].textContent.trim(),
-      targetYear,
-      isVacation: false,
+      type: EventType.CALENDAR,
+      text: daySpansListDom[1].textContent.trim(), // ToDo: Handle the culture event text - See the original code.
+      isVacation: false, // ToDo: handle the isVacation later - See the original code.
+    };
+  }
+
+  private async createUnitedStatesEvents(): Promise<CalendarEvent[]> {
+    const dom: any = await domUtils.getDomFromUrl(unitedStateCalendarUrl);
+    // Get all days DOM elements from the document.
+    const daysList: NodeListOf<Element> =
+      dom.window.document.getElementsByTagName(unitedStatesRowSelector);
+    const events: CalendarEvent[] = [];
+    for (const day of daysList) {
+      const event: CalendarEvent = this.createUnitedStatesEvent(day);
+      if (event) {
+        events.push(event);
+      }
+    }
+    // ToDo: uncomment the confirmation service.
+    return events;
+  }
+
+  private createUnitedStatesEvent(dayDom: Element): CalendarEvent | undefined {
+    const cell: Element = dayDom.getElementsByTagName(
+      unitedStatesCellSelector
+    )[1];
+    if (!cell?.textContent) {
+      return undefined;
+    }
+    const dayTitle: string = cell.textContent.trim();
+    // Take only the specific dynamic dates from the US calendar.
+    const dynamicEvent: DynamicEvent | undefined = DYNAMIC_EVENTS.find(
+      (e: DynamicEvent) => e.includeText === dayTitle
+    );
+    if (!dynamicEvent) {
+      return undefined;
+    }
+    const { displayText, startYear } = dynamicEvent;
+    const dateTimestamp: string | null = dayDom.getAttribute(
+      unitedStatesTimeStampDataSelector
+    );
+    const { day, month, year } = timeUtils.getDatePartsFromTimeStamp(
+      parseInt(dateTimestamp)
+    );
+    return {
+      id: this.lastId++,
+      day,
+      month,
+      year,
+      type: EventType.DYNAMIC,
+      text: displayText,
+      startYear,
     };
   }
 }
 
 const createScript: CreateScript = new CreateScript();
 export { createScript };
+
+// ToDo: Need to format events before log them to the file ("-event.") - Create formatter service for this.

@@ -1,12 +1,12 @@
 import { EventType } from './eventType';
 
-export type EventDate = {
+export type CalendarEvent = {
   id: number;
   day: number;
   month: number;
   year: number;
-  eventType: EventType;
+  type: EventType;
   text: string;
-  targetYear: string;
-  isVacation: boolean;
+  startYear?: number;
+  isVacation?: boolean;
 };
