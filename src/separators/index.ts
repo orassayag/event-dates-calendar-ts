@@ -9,4 +9,4 @@ export const unitedStatesCellSelector: string = 'td';
 export const unitedStatesTimeStampDataSelector: string = 'data-date';
 // Source file.
 export const futureEventsSeparator: string = '#FUTURE#.';
-export const endOfScrapeSeparator: string = '#EVENTS#.';
+export const endOfScrapeSeparator: string = '=====';

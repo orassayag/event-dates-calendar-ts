@@ -10,8 +10,8 @@ import {
 } from '../separators';
 import {
   confirmationService,
-  eventsService,
   fileReaderService,
+  sourceService,
   tasksService,
   validationService,
 } from '../services';
@@ -69,7 +69,7 @@ class CreateScript {
     // Also, get all the data before the events.
     logUtils.logStatus('READING SOURCE EVENTS DATA');
     const sourceEvents: EventsAndData =
-      eventsService.getSourceEventsAndData(lines);
+      sourceService.getSourceEventsAndData(lines);
     // Next, create the events dates file.
     logUtils.logStatus('CREATING THE EVENTS DATES FILE');
     // ToDo: Merge all days into 1 array.
@@ -233,3 +233,4 @@ const createScript: CreateScript = new CreateScript();
 export { createScript };
 
 // ToDo: Need to format events before log them to the file ("-event.") - Create formatter service for this.
+// ToDo: Need to sort the events on the opposite direction.

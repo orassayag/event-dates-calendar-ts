@@ -7,7 +7,7 @@ const DATE_WITHOUT_YEAR_REGEX: RegExp = /(\d{2})\/(\d{2})(?!\/\d{4})/;
 const NON_LETTER_REGEX: RegExp = /[^א-תa-zA-Z\s]/g;
 const LEADING_DASH_REGEX: RegExp = /^-/;
 
-class EventsService {
+class SourceService {
   public getSourceEventsAndData(lines: string[]): EventsAndData {
     return this.processLines(lines);
   }
@@ -42,12 +42,12 @@ class EventsService {
     currentType: EventType
   ): CalendarEvent | undefined {
     // Skip empty lines and separator lines.
-    if (!line || line.startsWith('=')) {
+    if (!line) {
       return undefined;
     }
     // Extract date with year: DD/MM/YYYY.
-    let dateMatch = line.match(DATE_WITH_YEAR_REGEX);
-    let hasYear = true;
+    let dateMatch: RegExpMatchArray = line.match(DATE_WITH_YEAR_REGEX);
+    let hasYear: boolean = true;
     // If no year found, try to match date without year: DD/MM.
     if (!dateMatch) {
       dateMatch = line.match(DATE_WITHOUT_YEAR_REGEX);
@@ -74,5 +74,5 @@ class EventsService {
   }
 }
 
-const eventsService: EventsService = new EventsService();
-export { eventsService };
+const sourceService: SourceService = new SourceService();
+export { sourceService };
