@@ -1,4 +1,4 @@
-import { DYNAMIC_EVENTS, MISSING_EVENTS } from '../data';
+import { DYNAMIC_EVENTS, MISSING_EVENTS, STATIC_EVENTS } from '../data';
 import {
   israelDayIdSelector,
   israelDayPersonalSelector,
@@ -10,7 +10,13 @@ import {
 } from '../separators';
 import { confirmationService, validationService } from '../services';
 import { SETTINGS } from '../settings';
-import { CalendarEvent, DynamicEvent, EventType, MissingEvent } from '../types';
+import {
+  CalendarEvent,
+  DynamicEvent,
+  EventType,
+  MissingEvent,
+  StaticEvent,
+} from '../types';
 import { domUtils, logUtils, systemUtils, timeUtils } from '../utils';
 
 const { targetYear, israelCalendarUrl, unitedStateCalendarUrl } =
@@ -36,7 +42,8 @@ class CreateScript {
     const usEvents: CalendarEvent[] = await this.createUnitedStatesEvents();
     // Third, complete the missing events from the Israel calendar website (add eve days, etc).
     const missingEvents: CalendarEvent[] = this.createMissingEvents(ilEvents);
-    // In the next step, get all the static events from an event culture file.
+    // In the next step, get all the static events.
+    const staticEvents: CalendarEvent[] = this.createStaticEvents();
     // Next, get all the events from the source event dates TXT file.
     // Next, create the calendar days to log.
     // Finally, log all the days into a new TXT file in the 'dist' directory.
@@ -179,6 +186,18 @@ class CreateScript {
       subText: displayText,
       isEveNight,
     };
+  }
+
+  private createStaticEvents(): CalendarEvent[] {
+    return STATIC_EVENTS.map(({ day, month, text, startYear }) => ({
+      id: this.lastId++,
+      day,
+      month,
+      year: targetYear,
+      type: EventType.STATIC,
+      text,
+      startYear,
+    }));
   }
 }
 
