@@ -1,4 +1,4 @@
-import { DYNAMIC_EVENTS } from '../data';
+import { DYNAMIC_EVENTS, MISSING_EVENTS } from '../data';
 import {
   israelDayIdSelector,
   israelDayPersonalSelector,
@@ -10,7 +10,7 @@ import {
 } from '../separators';
 import { confirmationService, validationService } from '../services';
 import { SETTINGS } from '../settings';
-import { CalendarEvent, DynamicEvent, EventType } from '../types';
+import { CalendarEvent, DynamicEvent, EventType, MissingEvent } from '../types';
 import { domUtils, logUtils, systemUtils, timeUtils } from '../utils';
 
 const { targetYear, israelCalendarUrl, unitedStateCalendarUrl } =
@@ -34,7 +34,8 @@ class CreateScript {
     const ilEvents: CalendarEvent[] = await this.createIsraelEvents();
     // Second, get all the events from the United States online calendar website.
     const usEvents: CalendarEvent[] = await this.createUnitedStatesEvents();
-    // Third, complete the missing events from the calendar website.
+    // Third, complete the missing events from the Israel calendar website (add eve days, etc).
+    const missingEvents: CalendarEvent[] = this.createMissingEvents(ilEvents);
     // In the next step, get all the static events from an event culture file.
     // Next, get all the events from the source event dates TXT file.
     // Next, create the calendar days to log.
@@ -133,6 +134,50 @@ class CreateScript {
       type: EventType.DYNAMIC,
       text: displayText,
       startYear,
+    };
+  }
+
+  private createMissingEvents(ilEvents: CalendarEvent[]): CalendarEvent[] {
+    const events: CalendarEvent[] = [];
+    for (const missingEvent of MISSING_EVENTS) {
+      const event: CalendarEvent = this.createMissingEvent(
+        ilEvents,
+        missingEvent
+      );
+      if (event) {
+        events.push(event);
+      }
+    }
+    return events;
+  }
+
+  private createMissingEvent(
+    ilEvents: CalendarEvent[],
+    missingEvent: MissingEvent
+  ): CalendarEvent | undefined {
+    const { includeText, excludeText, displayText, isEveNight } = missingEvent;
+    const matchEvent: CalendarEvent | undefined = ilEvents.find(
+      (e: CalendarEvent) => {
+        const includeMatch: boolean = e.text.includes(includeText);
+        const excludeMatch: boolean = excludeText
+          ? e.text.includes(excludeText)
+          : false;
+        return includeMatch && !excludeMatch;
+      }
+    );
+    if (!matchEvent) {
+      return undefined;
+    }
+    const { day, month, year, text } = matchEvent;
+    return {
+      id: this.lastId++,
+      day: isEveNight ? day - 1 : day,
+      month,
+      year,
+      type: EventType.MISSING,
+      text,
+      subText: displayText,
+      isEveNight,
     };
   }
 }

@@ -6,6 +6,7 @@ export enum EventType {
   CALENDAR = 'calendar',
   STATIC = 'static',
   DYNAMIC = 'dynamic',
+  MISSING = 'missing',
   REPEAT = 'repeat',
   DAY_TASK = 'dayTask',
   WEEKEND_TASK = 'weekendTask',

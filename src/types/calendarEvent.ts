@@ -7,6 +7,8 @@ export type CalendarEvent = {
   year: number;
   type: EventType;
   text: string;
+  subText?: string;
   startYear?: number;
   isVacation?: boolean;
+  isEveNight?: boolean;
 };
