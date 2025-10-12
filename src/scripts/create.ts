@@ -8,19 +8,30 @@ import {
   unitedStatesRowSelector,
   unitedStatesTimeStampDataSelector,
 } from '../separators';
-import { confirmationService, validationService } from '../services';
+import {
+  confirmationService,
+  fileReaderService,
+  tasksService,
+  validationService,
+} from '../services';
 import { SETTINGS } from '../settings';
 import {
   CalendarEvent,
   DynamicEvent,
   EventType,
   MissingEvent,
+  RoutineTask,
   StaticEvent,
 } from '../types';
 import { domUtils, logUtils, systemUtils, timeUtils } from '../utils';
 
-const { targetYear, israelCalendarUrl, unitedStateCalendarUrl } =
-  SETTINGS.create;
+const {
+  targetYear,
+  israelCalendarUrl,
+  unitedStateCalendarUrl,
+  eventsIndexPath,
+} = SETTINGS.create;
+const { sourcePath } = SETTINGS.global;
 
 class CreateScript {
   private lastId: number = 1;
@@ -35,20 +46,38 @@ class CreateScript {
   }
 
   private async create(): Promise<void> {
-    logUtils.logStatus('CREATE TEXT FILE');
-    // First, get all the events from the Israel online calendar website.
+    // First, get all the events from the Israel online calendar website (all days in the year).
+    logUtils.logStatus('CREATING ISRAEL EVENTS');
     const ilEvents: CalendarEvent[] = await this.createIsraelEvents();
-    // Second, get all the events from the United States online calendar website.
+    // Second, get all the events from the United States online calendar website (holidays only).
+    logUtils.logStatus('CREATING UNITED STATES EVENTS');
     const usEvents: CalendarEvent[] = await this.createUnitedStatesEvents();
     // Third, complete the missing events from the Israel calendar website (add eve days, etc).
+    logUtils.logStatus('CREATING MISSING EVENTS');
     const missingEvents: CalendarEvent[] = this.createMissingEvents(ilEvents);
     // In the next step, get all the static events.
+    logUtils.logStatus('CREATING STATIC EVENTS');
     const staticEvents: CalendarEvent[] = this.createStaticEvents();
-    // Next, get all the events from the source event dates TXT file.
-    // Next, create the calendar days to log.
+    // Next, read all the data from the current source event dates TXT file.
+    logUtils.logStatus('READING SOURCE DATA');
+    // const lines: string[] = await fileReaderService.readFile(sourcePath);
+    // Next, get all the tasks from the event dates index TXT file (daily, monthly, yearly, etc).
+    logUtils.logStatus('READING ROUTINE TASKS DATA');
+    const tasks: RoutineTask[] = await tasksService.loadTasks(eventsIndexPath);
+    console.log(tasks);
+    // Next, load all services, birth dates, death dates, and marriage dates.
+    // Next, load all data before the events.
+    // Next, load all the future events.
+    // Next, create the events dates file.
+    logUtils.logStatus('CREATING THE EVENTS DATES FILE');
+    // ToDo: Merge all days into 1 array.
     // Finally, log all the days into a new TXT file in the 'dist' directory.
-    systemUtils.exit('SCRIPT COMPLETE SUCCESSFULLY');
+    logUtils.logStatus('EVENTS DATES FILE HAS BEEN CREATED SUCCESSFULLY');
+    // ToDo: Log the file.
+    systemUtils.exit('SCRIPT COMPLETE');
   }
+
+  // ToDo: Calculate the number years from startYear if exists.
 
   private async createIsraelEvents(): Promise<CalendarEvent[]> {
     const dom: any = await domUtils.getDomFromUrl(israelCalendarUrl);
@@ -72,7 +101,7 @@ class CreateScript {
     }
     const daySpansListDom: HTMLCollectionOf<Element> =
       dayDom.getElementsByTagName(israelDaySpansSelector);
-    if (daySpansListDom.length < 2) {
+    if (daySpansListDom.length < 1) {
       return undefined;
     }
     // Example of day Id: "id20211214".
@@ -90,7 +119,7 @@ class CreateScript {
       month,
       year,
       type: EventType.CALENDAR,
-      text: daySpansListDom[1].textContent.trim(), // ToDo: Handle the culture event text - See the original code.
+      text: daySpansListDom[1] ? daySpansListDom[1].textContent.trim() : '', // ToDo: Handle the culture event text - See the original code.
       isVacation: false, // ToDo: handle the isVacation later - See the original code.
     };
   }

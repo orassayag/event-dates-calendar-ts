@@ -15,6 +15,8 @@ export interface CreateScriptSettings {
   unitedStateCalendarUrl: string;
   // Determine the name of the resulting `event dates` new TXT file in the 'dist' directory.
   distFileName: string;
+  // Determine the events dates index directory path which there, the daily and routine events templates are located.
+  eventsIndexPath: string;
 }
 
 export interface Settings {

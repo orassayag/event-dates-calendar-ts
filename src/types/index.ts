@@ -2,5 +2,7 @@ export * from './calendarEvent';
 export * from './dynamicEvent';
 export * from './eventType';
 export * from './missingEvent';
+export * from './routineTask';
+export * from './routineType';
 export * from './settings';
 export * from './staticEvent';
