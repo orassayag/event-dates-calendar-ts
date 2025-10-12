@@ -1,10 +1,9 @@
 export enum EventType {
   INITIATE = 'initiate',
-  SERVICE = 'service',
-  BIRTHDAY = 'birthday',
-  DEATHDAY = 'deathday',
+  SOURCE = 'source',
   CALENDAR = 'calendar',
   STATIC = 'static',
   DYNAMIC = 'dynamic',
   MISSING = 'missing',
+  FUTURE = 'future',
 }

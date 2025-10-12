@@ -1,5 +1,6 @@
 export * from './calendarEvent';
 export * from './dynamicEvent';
+export * from './eventsAndData';
 export * from './eventType';
 export * from './missingEvent';
 export * from './routineTask';

@@ -3,7 +3,7 @@ import { textUtils } from '../utils';
 import { fileReaderService } from './fileReader';
 
 class TasksService {
-  public async loadTasks(filePath: string): Promise<RoutineTask[]> {
+  public async getRoutineTasks(filePath: string): Promise<RoutineTask[]> {
     const lines: string[] = await fileReaderService.readFile(filePath);
     return this.processLines(lines);
   }

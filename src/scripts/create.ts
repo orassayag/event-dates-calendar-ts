@@ -10,6 +10,7 @@ import {
 } from '../separators';
 import {
   confirmationService,
+  eventsService,
   fileReaderService,
   tasksService,
   validationService,
@@ -18,6 +19,7 @@ import { SETTINGS } from '../settings';
 import {
   CalendarEvent,
   DynamicEvent,
+  EventsAndData,
   EventType,
   MissingEvent,
   RoutineTask,
@@ -34,8 +36,6 @@ const {
 const { sourcePath } = SETTINGS.global;
 
 class CreateScript {
-  private lastId: number = 1;
-
   public async run(): Promise<void> {
     // Validate all settings are fit to the user needs.
     // await confirmationService.run('create');
@@ -60,17 +60,20 @@ class CreateScript {
     const staticEvents: CalendarEvent[] = this.createStaticEvents();
     // Next, read all the data from the current source event dates TXT file.
     logUtils.logStatus('READING SOURCE DATA');
-    // const lines: string[] = await fileReaderService.readFile(sourcePath);
+    const lines: string[] = await fileReaderService.readFile(sourcePath);
     // Next, get all the tasks from the event dates index TXT file (daily, monthly, yearly, etc).
     logUtils.logStatus('READING ROUTINE TASKS DATA');
-    const tasks: RoutineTask[] = await tasksService.loadTasks(eventsIndexPath);
-    console.log(tasks);
-    // Next, load all services, birth dates, death dates, and marriage dates.
-    // Next, load all data before the events.
-    // Next, load all the future events.
+    const tasks: RoutineTask[] =
+      await tasksService.getRoutineTasks(eventsIndexPath);
+    // Next, load all services, birth dates, death dates, marriage dates, and future events.
+    // Also, get all the data before the events.
+    logUtils.logStatus('READING SOURCE EVENTS DATA');
+    const sourceEvents: EventsAndData =
+      eventsService.getSourceEventsAndData(lines);
     // Next, create the events dates file.
     logUtils.logStatus('CREATING THE EVENTS DATES FILE');
     // ToDo: Merge all days into 1 array.
+    // ToDo: Sync and calculate counters of dates.
     // Finally, log all the days into a new TXT file in the 'dist' directory.
     logUtils.logStatus('EVENTS DATES FILE HAS BEEN CREATED SUCCESSFULLY');
     // ToDo: Log the file.
@@ -114,7 +117,6 @@ class CreateScript {
       `${dayIdDom[2]}${dayIdDom[3]}${dayIdDom[4]}${dayIdDom[5]}`
     );
     return {
-      id: this.lastId++,
       day,
       month,
       year,
@@ -163,7 +165,6 @@ class CreateScript {
       parseInt(dateTimestamp)
     );
     return {
-      id: this.lastId++,
       day,
       month,
       year,
@@ -206,7 +207,6 @@ class CreateScript {
     }
     const { day, month, year, text } = matchEvent;
     return {
-      id: this.lastId++,
       day: isEveNight ? day - 1 : day,
       month,
       year,
@@ -219,7 +219,6 @@ class CreateScript {
 
   private createStaticEvents(): CalendarEvent[] {
     return STATIC_EVENTS.map(({ day, month, text, startYear }) => ({
-      id: this.lastId++,
       day,
       month,
       year: targetYear,

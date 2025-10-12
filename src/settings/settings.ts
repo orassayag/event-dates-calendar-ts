@@ -4,7 +4,7 @@ import { pathUtils } from '../utils';
 
 export const SETTINGS: Settings = {
   global: {
-    sourcePath: pathUtils.getRelativePath('../../sources/event-dates-2024.txt'),
+    sourcePath: pathUtils.getRelativePath('../../sources/event-dates-2025.txt'),
     distPath: pathUtils.getRelativePath('../../dist'),
   },
   create: {
