@@ -22,7 +22,7 @@ class SourceService {
       if (line === endOfScrapeSeparator) {
         break;
       }
-      if (line === futureEventsSeparator) {
+      if (line.includes(futureEventsSeparator)) {
         currentType = EventType.FUTURE;
         continue;
       }
