@@ -1,5 +1,19 @@
 /* cSpell:disable */
 
+ToDo: last checkpoint:
+======================
+-Last stopped on: src\services\events.ts - line 62.
+-We need in this function to start print all the events and the tasks together (text + sub text).
+-Need to add "Hofesh" in case isVication: true.
+-Need to figure out in which order to do it.
+-Need to use "getDaysCountBetweenDates" function to calclulate the days:
+-a. for the tasks - from "src\data\dates.ts",
+-b. for event years like us holidays, use "startYear" fields.
+-Also need to do all the "ToDo" in the sync function.
+-Check that it prints all as expected, compare to original.
+-Do the rest of the "ToDo" issues around the project and in the below section.
+-The second phase of this project is to auto-sync from archive days from the Mac.
+
 ToDo: tasks in the end:
 =======================
 -Add the content of the validation service.
