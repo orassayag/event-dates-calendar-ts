@@ -63,9 +63,9 @@ class SourceService {
       ? parseInt(dateMatch[3])
       : undefined;
     // Extract the text before the date.
-    const dateString = dateMatch[0];
-    const dateIndex = line.indexOf(dateString);
-    let text = line.substring(0, dateIndex).trim();
+    const dateString: string = dateMatch[0];
+    const dateIndex: number = line.indexOf(dateString);
+    let text: string = line.substring(0, dateIndex).trim();
     // Remove leading dash if present.
     text = text.replace(LEADING_DASH_REGEX, '').trim();
     // Remove anything that's not a letter (removes numbers, slashes, dots, colons, etc.).

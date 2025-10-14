@@ -10,6 +10,7 @@ import {
 } from '../separators';
 import {
   confirmationService,
+  eventsService,
   fileReaderService,
   sourceService,
   tasksService,
@@ -20,6 +21,7 @@ import {
   CalendarEvent,
   DynamicEvent,
   EventsAndData,
+  EventText,
   EventType,
   MissingEvent,
   RoutineTask,
@@ -70,17 +72,21 @@ class CreateScript {
     logUtils.logStatus('READING SOURCE EVENTS DATA');
     const sourceEvents: EventsAndData =
       sourceService.getSourceEventsAndData(lines);
-    // Next, create the events dates file.
-    logUtils.logStatus('CREATING THE EVENTS DATES FILE');
-    // ToDo: Merge all days into 1 array.
-    // ToDo: Sync and calculate counters of dates.
+    // Next, sync all the events, set the counters, convert to event text and sort them.
+    logUtils.logStatus('CREATING THE EVENTS TEXTS');
+    const eventsText: EventText[] = eventsService.createEventsText({
+      ilEvents,
+      usEvents,
+      missingEvents,
+      staticEvents,
+      tasks,
+      sourceEvents: sourceEvents.events,
+    });
     // Finally, log all the days into a new TXT file in the 'dist' directory.
     logUtils.logStatus('EVENTS DATES FILE HAS BEEN CREATED SUCCESSFULLY');
     // ToDo: Log the file.
     systemUtils.exit('SCRIPT COMPLETE');
   }
-
-  // ToDo: Calculate the number years from startYear if exists.
 
   private async createIsraelEvents(): Promise<CalendarEvent[]> {
     const dom: any = await domUtils.getDomFromUrl(israelCalendarUrl);
@@ -231,6 +237,3 @@ class CreateScript {
 
 const createScript: CreateScript = new CreateScript();
 export { createScript };
-
-// ToDo: Need to format events before log them to the file ("-event.") - Create formatter service for this.
-// ToDo: Need to sort the events on the opposite direction.
