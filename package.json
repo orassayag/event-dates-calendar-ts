@@ -18,6 +18,8 @@
   "type": "module",
   "scripts": {
     "lint": "eslint src/**/*.{ts,tsx}",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx}\"",
     "start": "tsx src/index.ts",
     "build": "tsc"
   },
