@@ -17,9 +17,33 @@ export interface CreateScriptSettings {
   distFileName: string;
   // Determine the events dates index directory path which there, the daily and routine events templates are located.
   eventsIndexPath: string;
+  // Determine the fallback path for the events dates index file (used if primary path is not found).
+  eventsIndexFallbackPath: string;
+}
+
+export interface SyncScriptSettings {
+  // Determine the sources directory path where source and archive files are located.
+  sourcesPath: string;
+}
+
+export interface StopCounterScriptSettings {
+  // Determine the counter pattern text to match (without the counter number).
+  counterPatternText: string;
+  // Determine the stop date (DD/MM/YYYY format) or "all" to remove from all days.
+  stopDate: string | 'all';
+}
+
+export interface SearchScriptSettings {
+  // Determine the search key to look for in all text files.
+  searchKey: string;
+  // Determine the sources directory path where text files are located.
+  sourcesPath: string;
 }
 
 export interface Settings {
   global: GlobalSettings;
   create: CreateScriptSettings;
+  sync: SyncScriptSettings;
+  stopCounter: StopCounterScriptSettings;
+  search: SearchScriptSettings;
 }

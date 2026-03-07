@@ -1,36 +1,36 @@
-/* cSpell:disable */
 import { MissingEvent } from '../types';
+import { EVENTS_DIRECTORY } from './culture';
 
 export const MISSING_EVENTS: MissingEvent[] = [
   {
-    includeText: 'אילנות',
+    includeText: EVENTS_DIRECTORY.ILANOT,
     isEveNight: true,
   },
   {
-    includeText: 'שביעי של פסח',
-    displayText: 'מימונה',
+    includeText: EVENTS_DIRECTORY.PASSOVER_SEVENTH,
+    displayText: EVENTS_DIRECTORY.MIMOUNA,
     isEveNight: false,
   },
   {
-    includeText: 'הושענא רבה',
-    displayText: 'ערב חג סוכות שני',
+    includeText: EVENTS_DIRECTORY.HOSHANA_RABBAH,
+    displayText: EVENTS_DIRECTORY.SUKKOT_SECOND_EVENING,
     isEveNight: false,
   },
   {
-    includeText: 'שואה',
+    includeText: EVENTS_DIRECTORY.HOLOCAUST,
     isEveNight: true,
   },
   {
-    includeText: 'זכרון',
-    excludeText: 'שואה',
+    includeText: EVENTS_DIRECTORY.MEMORY,
+    excludeText: EVENTS_DIRECTORY.HOLOCAUST,
     isEveNight: true,
   },
   {
-    includeText: 'עצמאות',
+    includeText: EVENTS_DIRECTORY.INDEPENDENCE,
     isEveNight: true,
   },
   {
-    includeText: 'ט"ו באב',
+    includeText: EVENTS_DIRECTORY.TAV_BAV,
     isEveNight: true,
   },
 ];

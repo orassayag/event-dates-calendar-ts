@@ -1,100 +1,89 @@
-/* cSpell:disable */
 import { StaticEvent } from '../types';
+import { EVENTS_DIRECTORY } from './culture';
 
 export const STATIC_EVENTS: StaticEvent[] = [
   {
-    day: 1,
-    month: 1,
-    text: 'ראש השנה הלועזית החדשה',
-  },
-  {
     day: 27,
     month: 1,
-    text: 'יום השואה הבינלאומי',
+    text: EVENTS_DIRECTORY.INTERNATIONAL_HOLOCAUST_DAY,
     startYear: 2005,
   },
   {
     day: 14,
     month: 2,
-    text: 'יום ולנטיין',
+    text: EVENTS_DIRECTORY.VALENTINES_DAY,
     startYear: 1797,
   },
   {
     day: 8,
     month: 3,
-    text: 'יום האישה הבינלאומי',
+    text: EVENTS_DIRECTORY.INTERNATIONAL_WOMENS_DAY,
     startYear: 1909,
   },
   {
     day: 1,
     month: 4,
-    text: 'אחד באפריל - יום השוטים הבינלאומי',
+    text: EVENTS_DIRECTORY.APRIL_FOOLS_DAY,
     startYear: 1564,
   },
   {
     day: 1,
     month: 5,
-    text: 'חג הפועלים הבינלאומי',
+    text: EVENTS_DIRECTORY.INTERNATIONAL_WORKERS_DAY,
     startYear: 1872,
   },
   {
     day: 8,
     month: 5,
-    text: 'יום הניצחון באירופה במלחמת העולם השנייה',
+    text: EVENTS_DIRECTORY.VICTORY_IN_EUROPE_DAY,
     startYear: 1945,
   },
   {
     day: 14,
     month: 5,
-    text: 'יום הקמת מדינת ישראל',
+    text: EVENTS_DIRECTORY.ISRAELI_INDEPENDENCE_DAY,
     startYear: 1948,
   },
   {
     day: 6,
     month: 6,
-    text: 'יום הפלישה לנורמנדי - D-Day',
+    text: EVENTS_DIRECTORY.D_DAY,
     startYear: 1944,
-  },
-  {
-    day: 4,
-    month: 7,
-    text: 'יום העצמאות של ארה"ב',
-    startYear: 1776,
   },
   {
     day: 8,
     month: 9,
-    text: `יום פטירת מלכת אנגליה אליזבת' השנייה`,
+    text: EVENTS_DIRECTORY.DEATH_OF_ELIZABETH_II,
     startYear: 2022,
   },
   {
     day: 1,
     month: 9,
-    text: 'יום התחלת מלחמת העולם השנייה',
+    text: EVENTS_DIRECTORY.START_OF_WORLD_WAR_II,
     startYear: 1939,
   },
   {
     day: 1,
     month: 9,
-    text: 'יום תחילת שנת הלימודים בבתי הספר',
+    text: EVENTS_DIRECTORY.FIRST_DAY_OF_SCHOOL,
     startYear: 1890,
   },
   {
     day: 11,
     month: 9,
-    text: 'יום הזיכרון לפיגוע התיאומים',
+    text: EVENTS_DIRECTORY.NINE_ELEVEN_MEMORIAL_DAY,
     startYear: 2001,
   },
   {
     day: 4,
     month: 11,
-    text: 'יום הזיכרון הרשמי לרצח רבין',
+    text: EVENTS_DIRECTORY.MEMORIAL_DAY_FOR_THE_DEATH_OF_REBIN,
     startYear: 1995,
   },
   {
     day: 31,
     month: 12,
-    text: 'ערב השנה החדשה - הסילבסטר',
+    text: EVENTS_DIRECTORY.SILVESTER_OF_THE_YEAR,
     startYear: 1622,
   },
 ];

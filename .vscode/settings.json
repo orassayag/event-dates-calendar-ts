@@ -1,5 +1,16 @@
 {
-  "cSpell.words": ["Assayag", "Clalit", "deathdays", "orassayag"],
+  "cSpell.words": [
+    "Assayag",
+    "Clalit",
+    "deathdays",
+    "HOSHANA",
+    "ILANOT",
+    "Juneteenth",
+    "MIMOUNA",
+    "orassayag",
+    "RABBAH",
+    "WOMENS"
+  ],
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"

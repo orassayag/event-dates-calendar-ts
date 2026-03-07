@@ -8,11 +8,25 @@ export const SETTINGS: Settings = {
     distPath: pathUtils.getRelativePath('../../dist'),
   },
   create: {
-    targetYear: 2025,
+    targetYear: 2026,
     israelCalendarUrl: `https://calendar.2net.co.il/annual-calendar.aspx?year=${YEAR}`,
     unitedStateCalendarUrl: `https://www.timeanddate.com/holidays/us/${YEAR}`,
     distFileName: `event-dates-${YEAR}`,
-    eventsIndexPath:
+    eventsIndexPath: pathUtils.getRelativePath(
+      '../../sources/event-dates-index.txt'
+    ),
+    eventsIndexFallbackPath:
       'C:\\Users\\Or Assayag\\Dropbox\\or-life\\documents\\daily\\event-dates-index.txt',
+  },
+  sync: {
+    sourcesPath: pathUtils.getRelativePath('../../sources'),
+  },
+  stopCounter: {
+    counterPatternText: 'יום למלחמת אוקראינה-רוסיה',
+    stopDate: '12/12/2025',
+  },
+  search: {
+    searchKey: 'עבודה',
+    sourcesPath: pathUtils.getRelativePath('../../sources'),
   },
 };

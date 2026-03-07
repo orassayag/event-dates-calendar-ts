@@ -2,25 +2,38 @@
   "name": "event-dates-calendar-ts",
   "version": "1.0.0",
   "private": false,
-  "description": "A Node.js application to create a notepad TXT file calendar by combining a few elements.",
+  "description": "A Node.js TypeScript application to create and manage personalized calendar TXT files by combining events from multiple sources including Israeli holidays, US holidays, birthdays, anniversaries, and routine tasks with automated validation and synchronization.",
   "repository": {
     "type": "git",
     "url": "git://github.com/orassayag/event-dates-calendar-ts.git"
   },
   "keywords": [
     "nodejs",
-    "javascript",
-    "events",
+    "typescript",
     "calendar",
-    "days"
+    "events",
+    "scheduler",
+    "tasks",
+    "holidays",
+    "israeli-calendar",
+    "us-holidays",
+    "automation",
+    "jsdom",
+    "web-scraping"
   ],
   "main": "src/index.ts",
   "type": "module",
   "scripts": {
-    "lint": "eslint src/**/*.{ts,tsx}",
-    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,tsx}\"",
-    "start": "tsx src/index.ts",
+    "lint": "eslint \"src/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\"",
+    "start": "tsx src/runner.ts",
+    "script": "tsx src/runner.ts",
+    "create": "tsx src/runner.ts create",
+    "sync": "tsx src/runner.ts sync",
+    "validate": "tsx src/runner.ts validate",
+    "stop-counter": "tsx src/runner.ts stop-counter",
+    "search": "tsx src/runner.ts search",
     "build": "tsc"
   },
   "author": "Or Assayag <orassayag@gmail.com>",
@@ -37,24 +50,27 @@
     "misc",
     "node_modules",
     "sources",
+    "sources/examples",
     "src",
     ".gitignore",
     ".prettierrc",
     "eslint.config.mjs",
+    "CONTRIBUTING.md",
     "LICENSE",
     "INSTRUCTIONS.md",
     "package.json",
     "pnpm-lock.yaml",
+    "pnpm-workspace.yaml",
     "README.md",
     "tsconfig.json"
   ],
   "license": "MIT",
   "devDependencies": {
-    "@eslint/js": "^9.37.0",
-    "@types/node": "^24.7.2",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^25.3.3",
     "@typescript-eslint/eslint-plugin": "^8.46.0",
     "@typescript-eslint/parser": "^8.46.0",
-    "eslint": "^9.37.0",
+    "eslint": "^10.0.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "prettier": "^3.6.2",
@@ -63,6 +79,6 @@
     "typescript-eslint": "^8.46.0"
   },
   "dependencies": {
-    "jsdom": "^27.0.0"
+    "jsdom": "^28.1.0"
   }
 }

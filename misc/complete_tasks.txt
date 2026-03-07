@@ -1,3 +1,0 @@
-Completed + canceled tasks:
-===========================
--Fix the "No files matching the pattern "'src/**/*.{ts,tsx}'" were found." when running "pnpm lint". *

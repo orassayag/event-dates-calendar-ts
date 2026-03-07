@@ -6,4 +6,9 @@ export enum EventType {
   DYNAMIC = 'dynamic',
   MISSING = 'missing',
   FUTURE = 'future',
+  EXPIRATION = 'expiration',
+  BIRTHDAY = 'birthday',
+  DEATHDAY = 'deathday',
+  ANNIVERSARY = 'anniversary',
+  GIFT = 'gift',
 }

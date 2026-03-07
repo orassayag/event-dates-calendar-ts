@@ -24,6 +24,15 @@ export default [
       '@typescript-eslint/explicit-function-return-type': 'error',
       '@typescript-eslint/no-useless-constructor': 'error',
       '@typescript-eslint/no-floating-promises': 'error',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
+      'no-unused-vars': 'off',
     },
   },
 ];

@@ -3,8 +3,9 @@ export enum RoutineType {
   WEEKEND = 'weekend',
   WEEKEND_ALT = 'weekend-alt',
   END_MONTH = 'month-end',
+  QUARTER = 'quarter',
   HALF_YEAR = 'half-year',
-  YEAR = 'year',
+  START_YEAR = 'start-year',
   END_YEAR = 'end-year',
 }
 
@@ -13,7 +14,8 @@ export const RoutineTypesMap: Record<string, RoutineType> = {
   '#WEEKEND#': RoutineType.WEEKEND,
   '#WEEKEND-ALT#': RoutineType.WEEKEND_ALT,
   '#END-MONTH#': RoutineType.END_MONTH,
+  '#QUARTER#': RoutineType.QUARTER,
   '#HALF-YEAR#': RoutineType.HALF_YEAR,
-  '#YEAR#': RoutineType.YEAR,
+  '#START-YEAR#': RoutineType.START_YEAR,
   '#END-YEAR#': RoutineType.END_YEAR,
 };
