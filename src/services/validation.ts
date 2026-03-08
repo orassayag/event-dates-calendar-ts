@@ -128,40 +128,46 @@ class ValidationService {
 
   /**
    * Validates sync script: ensures source and archive files exist with matching years.
+   * When multiple years exist, uses the most recent year.
    *
    * @throws {Error} When source or archive file not found or years mismatch
    */
   private async validateSyncScript(): Promise<void> {
     const { sourcesPath } = SETTINGS.sync;
     const files: string[] = await fs.readdir(sourcesPath);
-    const sourceFile: string | undefined = files.find((file: string) =>
-      /^event-dates-\d{4}\.txt$/.test(file)
-    );
-    const archiveFile: string | undefined = files.find((file: string) =>
-      /^event-dates-archive-\d{4}\.txt$/.test(file)
-    );
-    if (!sourceFile) {
+    const sourceFiles: Array<{ file: string; year: number }> = [];
+    const archiveFiles: Array<{ file: string; year: number }> = [];
+    for (const file of files) {
+      const sourceMatch: RegExpMatchArray | null = file.match(/^event-dates-(\d{4})\.txt$/);
+      if (sourceMatch) {
+        sourceFiles.push({ file, year: parseInt(sourceMatch[1]) });
+      }
+      const archiveMatch: RegExpMatchArray | null = file.match(/^event-dates-archive-(\d{4})\.txt$/);
+      if (archiveMatch) {
+        archiveFiles.push({ file, year: parseInt(archiveMatch[1]) });
+      }
+    }
+    if (sourceFiles.length === 0) {
       throw new Error(
         `[ERROR-1000009] Source file not found in ${sourcesPath}.\nExpected format: event-dates-YYYY.txt`
       );
     }
-    if (!archiveFile) {
+    if (archiveFiles.length === 0) {
       throw new Error(
         `[ERROR-1000010] Archive file not found in ${sourcesPath}.\nExpected format: event-dates-archive-YYYY.txt`
       );
     }
-    const sourceYearMatch: RegExpMatchArray | null = sourceFile.match(/event-dates-(\d{4})\.txt$/);
-    const archiveYearMatch: RegExpMatchArray | null = archiveFile.match(/event-dates-archive-(\d{4})\.txt$/);
-    if (sourceYearMatch && archiveYearMatch) {
-      const sourceYear: number = parseInt(sourceYearMatch[1]);
-      const archiveYear: number = parseInt(archiveYearMatch[1]);
-      if (sourceYear !== archiveYear) {
-        throw new Error(
-          `[ERROR-1000011] Year mismatch: source file has year ${sourceYear}, archive file has year ${archiveYear}.\nBoth files must be for the same year.`
-        );
-      }
+    sourceFiles.sort((a, b) => b.year - a.year);
+    archiveFiles.sort((a, b) => b.year - a.year);
+    const latestSourceYear: number = sourceFiles[0].year;
+    const matchingArchive = archiveFiles.find((a) => a.year === latestSourceYear);
+    if (!matchingArchive) {
+      const availableArchiveYears: string = archiveFiles.map((a) => a.year).join(', ');
+      throw new Error(
+        `[ERROR-1000011] No matching archive file found for source year ${latestSourceYear}.\nAvailable archive years: ${availableArchiveYears}\nExpected: event-dates-archive-${latestSourceYear}.txt`
+      );
     }
-    logUtils.logStatus('validated: source and archive files exist with matching years');
+    logUtils.logStatus(`validated: source and archive files exist with matching years (${latestSourceYear})`);
   }
 }
 

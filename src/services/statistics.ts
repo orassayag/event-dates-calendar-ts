@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import { FileStats, StopCounterResult } from '../types';
+import { FileStats, StopCounterResult, CounterPattern } from '../types';
 import { logUtils } from '../utils';
 
 class StatisticsService {
@@ -39,7 +39,8 @@ class StatisticsService {
     archiveFilePath: string,
     distFilePath: string,
     syncedDays: string[],
-    unsyncedDays: string[]
+    unsyncedDays: string[],
+    appliedCounters?: CounterPattern[]
   ): Promise<void> {
     const sourceStats: FileStats = await this.getFileStats(sourceFilePath);
     const archiveStats: FileStats = await this.getFileStats(archiveFilePath);
@@ -58,6 +59,14 @@ class StatisticsService {
     logUtils.logStatus(`size: ${distStats.size} | days: ${this.formatNumber(distStats.days)}`);
     logUtils.logStatus(`lines: ${this.formatNumber(distStats.lines)} | events: ${this.formatNumber(distStats.events)}`);
     logUtils.log(divider);
+    if (appliedCounters && appliedCounters.length > 0) {
+      logUtils.logStatus(`applied counters: ${appliedCounters.length}`);
+      for (const counter of appliedCounters) {
+        const exampleTask: string = counter.taskTemplate.trim();
+        logUtils.log(`  - ${exampleTask.substring(0, 50)}${exampleTask.length > 50 ? '...' : ''}`);
+      }
+      logUtils.log(divider);
+    }
     if (syncedDays.length > 0) {
       logUtils.logStatus(`synced days: ${syncedDays.length}`);
       for (const day of syncedDays) {

@@ -296,7 +296,7 @@ class ValidateService {
             const pattern: CounterPattern = counterPatterns.get(eventText)!;
             if (counterTracking.has(eventText)) {
               const previousValue: number = counterTracking.get(eventText)!;
-              const expectedValue: number = previousValue - 1;
+              const expectedValue: number = previousValue + 1;
               if (currentValue === previousValue) {
                 const fixedValue: number = currentValue + 1;
                 const fixedLine: string = line.replace(

@@ -2,6 +2,7 @@
 
 ToDo:
 =======================
+-Create a guide how to use after a period of time.
 =======================
 
 -Long term tasks:

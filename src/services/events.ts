@@ -16,20 +16,20 @@ const { targetYear } = SETTINGS.create;
 
 class EventsService {
   /**
-   * Creates formatted event text for all days of the year in reverse chronological order.
+   * Creates formatted event text for all days of the year in chronological order.
    *
    * @param eventsData - Combined events data including IL, US, missing, static, source events and tasks
-   * @returns Array of EventText sorted from Dec 31 to Jan 1
+   * @returns Array of EventText sorted from Jan 1 to Dec 31
    */
   public createEventsText(eventsData: EventsData): EventText[] {
     return this.syncEvents(eventsData);
   }
 
   /**
-   * Syncs all events across 365/366 days, formats texts, and returns events in reverse chronological order.
+   * Syncs all events across 365/366 days, formats texts, and returns events in chronological order.
    *
    * @param eventsData - Combined events data
-   * @returns Array of EventText for each day, newest dates first
+   * @returns Array of EventText for each day, oldest dates first (Jan 1 to Dec 31)
    */
   private syncEvents(eventsData: EventsData): EventText[] {
     const {
@@ -51,11 +51,9 @@ class EventsService {
     let dayCounter: number = 1;
     let hanukkahCounter: number = 0;
     let lastHanukkahDayCounter: number = -1;
-    // Loop through all 365/366 days of the year.
     for (let month = 1; month <= 12; month++) {
       const daysInMonth: number = timeUtils.getDaysInMonth(month, targetYear);
       for (let day = 1; day <= daysInMonth; day++) {
-        // Filter events that match this specific day and month.
         const matchingEvents: CalendarEvent[] = allEvents.filter(
           (e: CalendarEvent) => e.day === day && e.month === month
         );
@@ -68,7 +66,6 @@ class EventsService {
           }
           lastHanukkahDayCounter = dayCounter;
         }
-        // Sync event for this specific day with all matching events.
         const eventText: EventText = this.syncEvent({
           events: matchingEvents,
           tasks,
@@ -81,8 +78,7 @@ class EventsService {
         dayCounter++;
       }
     }
-    // Reverse to show newest dates first (Dec 31 to Jan 1).
-    return eventsText.reverse();
+    return eventsText;
   }
 
   /**

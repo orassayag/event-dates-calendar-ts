@@ -15,6 +15,7 @@ Built in 2025-2026. This TypeScript application scrapes calendar data from onlin
 - ✏️ Validates and fixes formatting issues automatically
 - 🛑 Stop counter functionality for ongoing events
 - 📊 Comprehensive statistics and reporting
+- 📆 **Chronological date ordering**: Events are organized from January 1st to December 31st for easy navigation
 
 ## Getting Started
 

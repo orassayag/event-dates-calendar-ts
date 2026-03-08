@@ -27,7 +27,8 @@ class SyncScript {
       result.archiveFilePath,
       result.distFilePath,
       result.syncedDays,
-      result.unsyncedDays
+      result.unsyncedDays,
+      result.appliedCounters
     );
     systemUtils.exit('SCRIPT COMPLETE');
   }

@@ -95,6 +95,29 @@ class CalculatorService {
       }
     });
   }
+
+  /**
+   * Adds ". *" to tasks that don't already have it, without touching counter placeholders (###).
+   * Used for synced days where counters should remain as-is.
+   *
+   * @param tasks - Array of task strings to process
+   * @returns Array of tasks with ". *" added where missing
+   */
+  public addAsteriskToTasks(tasks: string[]): string[] {
+    return tasks.map((task: string) => {
+      const trimmedTask: string = task.trim();
+      if (!trimmedTask.startsWith('-')) {
+        return task;
+      }
+      if (ENDS_WITH_ASTERISK.test(task)) {
+        return task;
+      }
+      if (ENDS_WITH_DOT.test(task)) {
+        return task.replace(/\.$/, '. *');
+      }
+      return task;
+    });
+  }
 }
 
 const calculatorService: CalculatorService = new CalculatorService();

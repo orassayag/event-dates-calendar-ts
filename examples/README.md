@@ -2,6 +2,17 @@
 
 This directory contains example source files with dummy data to demonstrate the format and structure required for each script in the Event Dates Calendar application.
 
+## Important: Date Order
+
+**All calendar files use chronological date ordering from January 1st to December 31st.**
+
+This means:
+- ✅ January 1st appears at the top of the file
+- ✅ December 31st appears at the bottom of the file
+- ✅ Dates are arranged in ascending order (earliest to latest)
+
+This makes it easy to navigate through the year by scrolling forward from the beginning to the end.
+
 ## Files Overview
 
 ### 1. event-dates-2025.txt
@@ -23,19 +34,20 @@ This directory contains example source files with dummy data to demonstrate the 
   - `#GIFTS#` - Gift cards and vouchers with balances
   - Bank and financial information
 
-- **Daily entries** (after headers):
+- **Daily entries** (after headers, in chronological order from Jan 1 to Dec 31):
   ```
+  DD/MM/YYYY Day of week (Hebrew).
+  -Event 1. *
+  -Event 2. *
+  -Israeli Holiday: Name. *
+  -US Holiday: Name. *
+  -Daily task 1. *
+  -Daily task 2. *
+  
   ================
-  ===DD/MM/YYYY===
-  ================
-  Day of week (Hebrew)
-  -Event 1
-  -Event 2
-  -Israeli Holiday: Name
-  -US Holiday: Name
-  -Daily task 1
-  -Daily task 2
   ```
+  
+**Date Order**: Days are arranged chronologically from January 1st at the top to December 31st at the bottom of the file.
 
 ### 2. event-dates-archive-2025.txt
 **Purpose**: Archive file containing completed tasks marked with asterisks (*).
@@ -54,7 +66,9 @@ DD/MM/YYYY
 -More completed items. *
 ```
 
-**Note**: Each completed task ends with ` *` (space + asterisk)
+**Date Order**: Days must be in chronological order (earliest date first, latest date last) for proper syncing.
+
+**Note**: Each completed task ends with `. *` (period + space + asterisk)
 
 ### 3. event-dates-index.txt
 **Purpose**: Defines routine tasks that are automatically generated based on frequency.
