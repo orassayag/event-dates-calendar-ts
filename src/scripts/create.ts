@@ -1,6 +1,7 @@
 import {
   DYNAMIC_EVENTS,
   MISSING_EVENTS,
+  EVENTS_DIRECTORY,
   STATIC_EVENTS,
   US_HOLIDAYS_MAP,
   VACATION_KEYWORDS,
@@ -164,9 +165,12 @@ class CreateScript {
     const year: number = parseInt(
       `${dayIdDom[2]}${dayIdDom[3]}${dayIdDom[4]}${dayIdDom[5]}`
     );
-    const text: string = daySpansListDom[1]
+    let text: string = daySpansListDom[1]
       ? daySpansListDom[1].textContent.trim()
       : '';
+    if (text === 'יום הזיכרון' || text === 'יום הזכרון') {
+      text = EVENTS_DIRECTORY.FULL_MEMORY;
+    }
     const isVacation: boolean = this.checkIfVacation(text);
     return {
       day,
@@ -294,10 +298,22 @@ class CreateScript {
       return undefined;
     }
     const { day, month, year, text } = matchEvent;
+    let targetDay = day;
+    let targetMonth = month;
+    let targetYear = year;
+
+    if (isEveNight) {
+      const date = new Date(year, month - 1, day);
+      date.setDate(date.getDate() - 1);
+      targetDay = date.getDate();
+      targetMonth = date.getMonth() + 1;
+      targetYear = date.getFullYear();
+    }
+
     return {
-      day: isEveNight ? day - 1 : day,
-      month,
-      year,
+      day: targetDay,
+      month: targetMonth,
+      year: targetYear,
       type: EventType.MISSING,
       text,
       subText: displayText,

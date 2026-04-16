@@ -21,7 +21,10 @@ class FormatterService {
       text = `${HANUKKAH} - ${HANUKKAH_CANDLES[hanukkahCandleIndex]}`;
     }
     if (event.subText) {
-      text = `${event.subText} ${text.substring(1)}`;
+      text = `${event.subText} ${text}`;
+    }
+    if (event.isEveNight) {
+      text = `ערב ${text}`;
     }
     if (event.startYear !== undefined) {
       const yearsCount: number = targetYear - event.startYear;

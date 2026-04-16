@@ -59,6 +59,7 @@ export const EVENTS_DIRECTORY = {
   SUKKOT_SECOND_EVENING: 'ערב חג סוכות שני',
   HOLOCAUST: 'שואה',
   MEMORY: 'זכרון',
+  FULL_MEMORY: 'יום הזיכרון לחללי מערכות ישראל ופעולות האיבה',
   INDEPENDENCE: 'עצמאות',
   TAV_BAV: 'ט"ו באב',
   BLACK_FRIDAY: 'יום שישי השחור - בלאק פריידיי',
