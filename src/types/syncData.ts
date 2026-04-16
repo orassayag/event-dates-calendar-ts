@@ -14,7 +14,7 @@ export interface CalculatorState {
   currentCount: number;
 }
 
-export interface CounterPattern {
+export interface SyncCounterPattern {
   pattern: string;
   baselineValue: number;
   taskTemplate: string;
@@ -28,5 +28,5 @@ export interface SyncResult {
   mergedDays: DayData[];
   syncedDays: string[];
   unsyncedDays: string[];
-  appliedCounters?: CounterPattern[];
+  appliedCounters?: SyncCounterPattern[];
 }

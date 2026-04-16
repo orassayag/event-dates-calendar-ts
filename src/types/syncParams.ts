@@ -1,9 +1,8 @@
-import { DayData, CalculatorState } from './index';
+import { DayData } from './index';
 
 export type MergeDaysParams = {
   sourceDays: DayData[];
   archiveDays: DayData[];
-  calculatorMap: Map<string, CalculatorState>;
 };
 
 export type WriteMergedFileParams = {

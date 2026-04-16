@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import { CalculatorState, DayData, SyncResult, MergeDaysParams, WriteMergedFileParams, CounterPattern } from '../types';
+import { DayData, SyncResult, MergeDaysParams, WriteMergedFileParams, SyncCounterPattern } from '../types';
 import { SETTINGS } from '../settings';
 import { fileReaderService } from './fileReader';
 import { calculatorService } from './calculator';
@@ -37,13 +37,10 @@ class SyncService {
     logUtils.logStatus('parsing days from source and archive');
     const sourceDays: DayData[] = this.parseDays(sourceLines, false);
     const archiveDays: DayData[] = this.parseDays(archiveLines, true);
-    logUtils.logStatus('building calculator state from source and archive');
-    const calculatorMap: Map<string, CalculatorState> =
-      calculatorService.buildCalculatorState(sourceLines, archiveLines);
     logUtils.logStatus(`detecting counters from previous year: ${year - 1}`);
     const previousYearFilePath: string = await this.findPreviousYearFile(year);
     const previousYearLines: string[] = await fileReaderService.readFile(previousYearFilePath);
-    const detectedCounters: CounterPattern[] = this.detectCounters(previousYearLines, year - 1);
+    const detectedCounters: SyncCounterPattern[] = this.detectCounters(previousYearLines, year - 1);
     if (detectedCounters.length > 0) {
       logUtils.logStatus(`detected ${detectedCounters.length} counter(s) to apply`);
     } else {
@@ -53,7 +50,6 @@ class SyncService {
     const { mergedDays, syncedDays, unsyncedDays } = this.mergeDays({
       sourceDays,
       archiveDays,
-      calculatorMap,
     }, detectedCounters, year);
     logUtils.logStatus('writing merged file');
     const distFilePath: string = await this.writeMergedFile({
@@ -153,7 +149,7 @@ class SyncService {
     }
   }
 
-  private detectCounters(previousYearLines: string[], previousYear: number): CounterPattern[] {
+  private detectCounters(previousYearLines: string[], previousYear: number): SyncCounterPattern[] {
     const previousYearDays: DayData[] = this.parseDays(previousYearLines, false);
     if (previousYearDays.length < 10) {
       return [];
@@ -182,7 +178,7 @@ class SyncService {
         countersFromLastDay.set(pattern, { value, taskLine: task, position: index });
       }
     });
-    const validCounters: CounterPattern[] = [];
+    const validCounters: SyncCounterPattern[] = [];
     for (const [pattern, lastDayData] of countersFromLastDay.entries()) {
       let isValidCounter: boolean = true;
       let expectedValue: number = lastDayData.value - (last10Days.length - 1);
@@ -214,7 +210,7 @@ class SyncService {
     return validCounters;
   }
 
-  private applyCountersToDay(day: DayData, counters: CounterPattern[], daysElapsed: number): DayData {
+  private applyCountersToDay(day: DayData, counters: SyncCounterPattern[], daysElapsed: number): DayData {
     if (counters.length === 0) {
       return day;
     }
@@ -316,11 +312,11 @@ class SyncService {
   /**
    * Merges source and archive days, replaces calculator placeholders, marks unsynced tasks.
    *
-   * @param params - MergeDaysParams (sourceDays, archiveDays, calculatorMap)
+   * @param params - MergeDaysParams (sourceDays, archiveDays)
    * @returns Object with mergedDays, syncedDays, and unsyncedDays
    */
-  private mergeDays(params: MergeDaysParams, counters: CounterPattern[], currentYear: number): { mergedDays: DayData[]; syncedDays: string[]; unsyncedDays: string[] } {
-    const { sourceDays, archiveDays, calculatorMap } = params;
+  private mergeDays(params: MergeDaysParams, counters: SyncCounterPattern[], currentYear: number): { mergedDays: DayData[]; syncedDays: string[]; unsyncedDays: string[] } {
+    const { sourceDays, archiveDays } = params;
     const syncedDays: string[] = [];
     const unsyncedDays: string[] = [];
     const archiveDayMap: Map<string, DayData> = new Map();

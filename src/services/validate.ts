@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import { ValidationResult, ValidationStats, FixedLine, CounterPattern, CounterOccurrence, ValidateAndFixLinesParams } from '../types';
+import { ValidationResult, ValidationStats, FixedLine, ValidationCounterPattern, CounterOccurrence, ValidateAndFixLinesParams } from '../types';
 import { SETTINGS } from '../settings';
 import { fileReaderService } from './fileReader';
 import { pathUtils, logUtils } from '../utils';
@@ -37,10 +37,11 @@ class ValidateService {
       multipleSpacesFixes: 0,
       multipleBlankLinesFixes: 0,
       fixedLinesCount: 0,
+      duplicateLinesRemoved: 0,
     };
     const fixedLines: FixedLine[] = [];
     logUtils.logStatus('detecting counters');
-    const counterPatterns: Map<string, CounterPattern> = this.detectCounters(sourceLines);
+    const counterPatterns: Map<string, ValidationCounterPattern> = this.detectCounters(sourceLines);
     logUtils.logStatus(`found ${counterPatterns.size} counter patterns`);
     logUtils.logStatus('validating and fixing formatting');
     const validatedLines: string[] = this.validateAndFixLines({
@@ -96,9 +97,9 @@ class ValidateService {
    * Detects counter patterns in lines (sequential numeric patterns with 10+ occurrences).
    *
    * @param lines - Raw source file lines
-   * @returns Map of event text to CounterPattern for detected counters
+   * @returns Map of event text to ValidationCounterPattern for detected counters
    */
-  private detectCounters(lines: string[]): Map<string, CounterPattern> {
+  private detectCounters(lines: string[]): Map<string, ValidationCounterPattern> {
     const counterCandidates: Map<string, CounterOccurrence[]> = new Map();
     let inEventsSection: boolean = false;
     let currentDate: string = '';
@@ -136,7 +137,7 @@ class ValidateService {
         });
       }
     }
-    const counterPatterns: Map<string, CounterPattern> = new Map();
+    const counterPatterns: Map<string, ValidationCounterPattern> = new Map();
     for (const [eventText, occurrences] of counterCandidates.entries()) {
       const numericOccurrences: number[] = occurrences
         .filter((occ: CounterOccurrence) => typeof occ.value === 'number')
@@ -187,6 +188,7 @@ class ValidateService {
     let inEventsSection: boolean = false;
     let previousLineWasBlank: boolean = false;
     const counterTracking: Map<string, number> = new Map();
+    const seenEventsInDay: Set<string> = new Set();
     for (let i: number = 0; i < lines.length; i++) {
       let line: string = lines[i];
       const trimmedLine: string = line.trim();
@@ -206,6 +208,7 @@ class ValidateService {
         stats.totalDays++;
         validatedLines.push(line);
         previousLineWasBlank = false;
+        seenEventsInDay.clear();
         continue;
       }
       if (trimmedLine === '') {
@@ -281,6 +284,18 @@ class ValidateService {
           line = line.replace(/\s{2,}/g, ' ');
           wasFixed = true;
         }
+        const normalizedForDupCheck: string = line.trim();
+        if (seenEventsInDay.has(normalizedForDupCheck)) {
+          stats.duplicateLinesRemoved++;
+          fixedLines.push({
+            lineNumber: i + 1,
+            originalText: originalLine.trim(),
+            fixedText: '(REMOVED DUPLICATE)',
+          });
+          stats.fixedLinesCount++;
+          continue;
+        }
+        seenEventsInDay.add(normalizedForDupCheck);
         const counterMatch: RegExpMatchArray | null = line.trim().match(COUNTER_PATTERN);
         if (counterMatch) {
           const prefix: string = counterMatch[1];
@@ -293,7 +308,7 @@ class ValidateService {
               continue;
             }
             const currentValue: number = parseInt(valueStr);
-            const pattern: CounterPattern = counterPatterns.get(eventText)!;
+            const pattern: ValidationCounterPattern = counterPatterns.get(eventText)!;
             if (counterTracking.has(eventText)) {
               const previousValue: number = counterTracking.get(eventText)!;
               const expectedValue: number = previousValue + 1;

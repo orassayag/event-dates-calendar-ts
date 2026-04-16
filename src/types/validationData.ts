@@ -13,9 +13,10 @@ export interface ValidationStats {
   multipleSpacesFixes: number;
   multipleBlankLinesFixes: number;
   fixedLinesCount: number;
+  duplicateLinesRemoved: number;
 }
 
-export interface CounterPattern {
+export interface ValidationCounterPattern {
   eventText: string;
   prefix: string;
   suffix: string;

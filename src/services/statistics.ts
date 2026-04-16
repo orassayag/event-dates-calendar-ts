@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import { FileStats, StopCounterResult, CounterPattern } from '../types';
+import { FileStats, StopCounterResult, SyncCounterPattern } from '../types';
 import { logUtils } from '../utils';
 
 class StatisticsService {
@@ -40,7 +40,7 @@ class StatisticsService {
     distFilePath: string,
     syncedDays: string[],
     unsyncedDays: string[],
-    appliedCounters?: CounterPattern[]
+    appliedCounters?: SyncCounterPattern[]
   ): Promise<void> {
     const sourceStats: FileStats = await this.getFileStats(sourceFilePath);
     const archiveStats: FileStats = await this.getFileStats(archiveFilePath);
@@ -122,8 +122,8 @@ class StatisticsService {
     const lines: string[] = content.split('\n');
     const fileName: string = path.basename(filePath);
     const size: string = this.formatFileSize(stats.size);
-    const days: number = await this.countDays(content);
-    const events: number = await this.countEvents(content);
+    const days: number = this.countDays(content);
+    const events: number = this.countEvents(content);
     return {
       fileName,
       size,
@@ -139,7 +139,7 @@ class StatisticsService {
    * @param content - File content as string
    * @returns Promise resolving to number of day lines
    */
-  private async countDays(content: string): Promise<number> {
+  private countDays(content: string): number {
     const lines: string[] = content.split('\n');
     const dayPattern: RegExp = /^\d{2}\/\d{2}\/\d{4}/;
     return lines.filter((line: string) => dayPattern.test(line)).length;
@@ -151,7 +151,7 @@ class StatisticsService {
    * @param content - File content as string
    * @returns Promise resolving to number of event lines
    */
-  private async countEvents(content: string): Promise<number> {
+  private countEvents(content: string): number {
     const lines: string[] = content.split('\n');
     return lines.filter((line: string) => line.trim().startsWith('-')).length;
   }

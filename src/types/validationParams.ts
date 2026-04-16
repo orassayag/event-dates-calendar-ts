@@ -1,14 +1,14 @@
-import { ValidationStats, FixedLine, CounterPattern, StopCounterStats } from './index';
+import { ValidationStats, FixedLine, ValidationCounterPattern, StopCounterStats } from './index';
 
 export type ValidateAndFixLinesParams = {
   lines: string[];
   stats: ValidationStats;
   fixedLines: FixedLine[];
-  counterPatterns: Map<string, CounterPattern>;
+  counterPatterns: Map<string, ValidationCounterPattern>;
 };
 
 export type ProcessLinesParams = {
   lines: string[];
   stats: StopCounterStats;
-  targetPattern: CounterPattern | undefined;
+  targetPattern: ValidationCounterPattern | undefined;
 };

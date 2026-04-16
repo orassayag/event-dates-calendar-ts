@@ -46,6 +46,7 @@ class ValidateScript {
     logUtils.logStatus(`size: ${distStats.size} | days: ${this.formatNumber(distStats.days)}`);
     logUtils.logStatus(`lines: ${this.formatNumber(distStats.lines)} | events: ${this.formatNumber(distStats.events)}`);
     logUtils.logStatus(`missing start: ${stats.missingStart} | missing end: ${stats.missingEnd}`);
+    logUtils.logStatus(`duplicate lines removed: ${stats.duplicateLinesRemoved}`);
     logUtils.logStatus(`fixed lines count: ${stats.fixedLinesCount}`);
     if (fixedLines.length > 0) {
       logUtils.logStatus('fixed lines');

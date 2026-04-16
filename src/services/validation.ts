@@ -1,5 +1,4 @@
 import { promises as fs } from 'fs';
-import path from 'path';
 import { SETTINGS } from '../settings';
 import { logUtils, fileUtils } from '../utils';
 

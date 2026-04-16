@@ -1,5 +1,5 @@
 import { promises as fs } from 'fs';
-import { EventText, WriteEventFileParams } from '../types';
+import { WriteEventFileParams } from '../types';
 import { SETTINGS } from '../settings';
 import { pathUtils } from '../utils';
 import { sectionDividerSeparator } from '../separators';

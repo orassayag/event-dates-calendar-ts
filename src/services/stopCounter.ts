@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import { StopCounterResult, StopCounterStats, CounterPattern, CounterOccurrence, ProcessLinesParams } from '../types';
+import { StopCounterResult, StopCounterStats, ValidationCounterPattern, CounterOccurrence, ProcessLinesParams } from '../types';
 import { SETTINGS } from '../settings';
 import { fileReaderService } from './fileReader';
 import { pathUtils, logUtils } from '../utils';
@@ -40,9 +40,9 @@ class StopCounterService {
       eventsRemoved: 0,
     };
     logUtils.logStatus('detecting counters');
-    const counterPatterns: Map<string, CounterPattern> = this.detectCounters(sourceLines);
+    const counterPatterns: Map<string, ValidationCounterPattern> = this.detectCounters(sourceLines);
     logUtils.logStatus(`found ${counterPatterns.size} counter patterns`);
-    const targetPattern: CounterPattern | undefined = this.findTargetPattern(counterPatterns);
+    const targetPattern: ValidationCounterPattern | undefined = this.findTargetPattern(counterPatterns);
     if (!targetPattern) {
       logUtils.logStatus(`warning: counter pattern "${counterPatternText}" not found in file`);
     }
@@ -120,9 +120,9 @@ class StopCounterService {
    * Detects counter patterns in lines (sequential numeric patterns with 10+ occurrences).
    *
    * @param lines - Raw source file lines
-   * @returns Map of event text to CounterPattern for detected counters
+   * @returns Map of event text to ValidationCounterPattern for detected counters
    */
-  private detectCounters(lines: string[]): Map<string, CounterPattern> {
+  private detectCounters(lines: string[]): Map<string, ValidationCounterPattern> {
     const counterCandidates: Map<string, CounterOccurrence[]> = new Map();
     let inEventsSection: boolean = false;
     let currentDate: string = '';
@@ -160,7 +160,7 @@ class StopCounterService {
         });
       }
     }
-    const counterPatterns: Map<string, CounterPattern> = new Map();
+    const counterPatterns: Map<string, ValidationCounterPattern> = new Map();
     for (const [eventText, occurrences] of counterCandidates.entries()) {
       const numericOccurrences: number[] = occurrences
         .filter((occ: CounterOccurrence) => typeof occ.value === 'number')
@@ -203,9 +203,9 @@ class StopCounterService {
    * Finds the target counter pattern matching counterPatternText from settings.
    *
    * @param counterPatterns - Map of detected counter patterns
-   * @returns Matching CounterPattern or undefined if not found
+   * @returns Matching ValidationCounterPattern or undefined if not found
    */
-  private findTargetPattern(counterPatterns: Map<string, CounterPattern>): CounterPattern | undefined {
+  private findTargetPattern(counterPatterns: Map<string, ValidationCounterPattern>): ValidationCounterPattern | undefined {
     const normalizedTarget: string = this.normalizeText(counterPatternText);
     for (const pattern of counterPatterns.values()) {
       const normalizedPattern: string = this.normalizeText(pattern.eventText);
