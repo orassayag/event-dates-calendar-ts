@@ -31,10 +31,10 @@ importers:
         specifier: ^10.1.8
         version: 10.1.8(eslint@10.4.0)
       eslint-plugin-prettier:
-        specifier: ^5.5.4
+        specifier: ^5.5.5
         version: 5.5.5(eslint-config-prettier@10.1.8(eslint@10.4.0))(eslint@10.4.0)(prettier@3.8.3)
       prettier:
-        specifier: ^3.6.2
+        specifier: ^3.8.3
         version: 3.8.3
       tsx:
         specifier: ^4.22.3
