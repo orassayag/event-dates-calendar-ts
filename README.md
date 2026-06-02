@@ -27,17 +27,20 @@ Built in 2025-2026. This TypeScript application scrapes calendar data from onlin
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/orassayag/event-dates-calendar-ts.git
 cd event-dates-calendar-ts
 ```
 
 2. Install dependencies:
+
 ```bash
 pnpm install
 ```
 
 3. Build the project:
+
 ```bash
 pnpm build
 ```
@@ -45,6 +48,7 @@ pnpm build
 ### Configuration
 
 Edit the settings in `src/settings/settings.ts`:
+
 - `targetYear`: The year to create the calendar for (default: 2026)
 - `sourcePath`: Path to the source events file
 - `distPath`: Output directory for generated files
@@ -55,6 +59,7 @@ Edit the settings in `src/settings/settings.ts`:
 ### Example Files
 
 Example source files with dummy data are available in `sources/examples/`:
+
 - `event-dates-2025.txt` - Example main calendar file
 - `event-dates-archive-2025.txt` - Example archive with completed tasks
 - `event-dates-index.txt` - Example routine tasks definitions
@@ -65,49 +70,65 @@ These examples demonstrate the required format and structure for each script. Se
 ## Available Scripts
 
 ### Create
+
 Creates a new calendar file for the target year by combining events from all sources:
+
 ```bash
 pnpm run create
 ```
 
 ### Validate
+
 Validates and fixes formatting issues in the calendar file:
+
 ```bash
 pnpm run validate
 ```
 
 ### Sync
+
 Synchronizes source calendar with archive data:
+
 ```bash
 pnpm run sync
 ```
 
 ### Search
+
 Searches for a specific term in calendar files:
+
 ```bash
 pnpm run search
 ```
 
 ### Stop Counter
+
 Removes or stops counter events from a specific date:
+
 ```bash
 pnpm run stop-counter
 ```
 
 ### Build
+
 Compiles TypeScript to JavaScript:
+
 ```bash
 pnpm build
 ```
 
 ### Lint
+
 Checks code for linting errors:
+
 ```bash
 pnpm lint
 ```
 
 ### Format
+
 Formats code using Prettier:
+
 ```bash
 pnpm format
 ```
@@ -137,6 +158,7 @@ All errors include a unique serial number (1000001-1000023) for easy identificat
 ## Development
 
 The project uses:
+
 - **TypeScript** for type safety
 - **pnpm** for package management
 - **ESLint** for code linting
@@ -153,11 +175,11 @@ Please feel free to contact me with any question, comment, pull-request, issue, 
 
 ## Author
 
-* **Or Assayag** - *Initial work* - [orassayag](https://github.com/orassayag)
-* Or Assayag <orassayag@gmail.com>
-* GitHub: https://github.com/orassayag
-* StackOverflow: https://stackoverflow.com/users/4442606/or-assayag?tab=profile
-* LinkedIn: https://linkedin.com/in/orassayag
+- **Or Assayag** - _Initial work_ - [orassayag](https://github.com/orassayag)
+- Or Assayag <orassayag@gmail.com>
+- GitHub: https://github.com/orassayag
+- StackOverflow: https://stackoverflow.com/users/4442606/or-assayag?tab=profile
+- LinkedIn: https://linkedin.com/in/orassayag
 
 ## License
 

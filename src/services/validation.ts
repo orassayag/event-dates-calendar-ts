@@ -24,7 +24,9 @@ class ValidationService {
    * @param scriptType - Script type to validate (create, validate, search, stop-counter, sync)
    * @throws {Error} When validation fails for the script
    */
-  private async validateScriptPrerequisites(scriptType: ScriptType): Promise<void> {
+  private async validateScriptPrerequisites(
+    scriptType: ScriptType
+  ): Promise<void> {
     switch (scriptType) {
       case 'create':
         await this.validateCreateScript();
@@ -53,14 +55,20 @@ class ValidationService {
     const { targetYear } = SETTINGS.create;
     const { sourcePath } = SETTINGS.global;
     const previousYear: number = targetYear - 1;
-    const expectedPreviousFile: string = sourcePath.replace(/\d{4}/, previousYear.toString());
-    const fileExists: boolean = await fileUtils.fileExists(expectedPreviousFile);
+    const expectedPreviousFile: string = sourcePath.replace(
+      /\d{4}/,
+      previousYear.toString()
+    );
+    const fileExists: boolean =
+      await fileUtils.fileExists(expectedPreviousFile);
     if (!fileExists) {
       throw new Error(
         `[ERROR-1000002] Previous year source file not found: ${expectedPreviousFile}\nPlease ensure the ${previousYear} events file exists before creating ${targetYear} calendar.`
       );
     }
-    logUtils.logStatus(`validated: previous year file exists (${previousYear})`);
+    logUtils.logStatus(
+      `validated: previous year file exists (${previousYear})`
+    );
   }
 
   /**
@@ -90,13 +98,19 @@ class ValidationService {
   private async validateSearchScript(): Promise<void> {
     const { searchKey, sourcesPath } = SETTINGS.search;
     if (!searchKey || searchKey.trim().length === 0) {
-      throw new Error('[ERROR-1000004] Search key is empty. Please configure a valid search key in settings.');
+      throw new Error(
+        '[ERROR-1000004] Search key is empty. Please configure a valid search key in settings.'
+      );
     }
     const dirExists: boolean = await fileUtils.fileExists(sourcesPath);
     if (!dirExists) {
-      throw new Error(`[ERROR-1000005] Sources directory not found: ${sourcesPath}`);
+      throw new Error(
+        `[ERROR-1000005] Sources directory not found: ${sourcesPath}`
+      );
     }
-    logUtils.logStatus('validated: search key configured and sources directory exists');
+    logUtils.logStatus(
+      'validated: search key configured and sources directory exists'
+    );
   }
 
   /**
@@ -108,10 +122,14 @@ class ValidationService {
     const { counterPatternText, stopDate } = SETTINGS.stopCounter;
     const { sourcesPath } = SETTINGS.sync;
     if (!counterPatternText || counterPatternText.trim().length === 0) {
-      throw new Error('[ERROR-1000006] Counter pattern text is empty. Please configure it in settings.');
+      throw new Error(
+        '[ERROR-1000006] Counter pattern text is empty. Please configure it in settings.'
+      );
     }
     if (!stopDate || stopDate.trim().length === 0) {
-      throw new Error('[ERROR-1000007] Stop date is empty. Please configure it in settings.');
+      throw new Error(
+        '[ERROR-1000007] Stop date is empty. Please configure it in settings.'
+      );
     }
     const files: string[] = await fs.readdir(sourcesPath);
     const sourceFile: string | undefined = files.find((file: string) =>
@@ -122,7 +140,9 @@ class ValidationService {
         `[ERROR-1000008] No source file found in ${sourcesPath}.\nExpected format: event-dates-YYYY.txt`
       );
     }
-    logUtils.logStatus('validated: counter configuration and source file exist');
+    logUtils.logStatus(
+      'validated: counter configuration and source file exist'
+    );
   }
 
   /**
@@ -137,11 +157,15 @@ class ValidationService {
     const sourceFiles: Array<{ file: string; year: number }> = [];
     const archiveFiles: Array<{ file: string; year: number }> = [];
     for (const file of files) {
-      const sourceMatch: RegExpMatchArray | null = file.match(/^event-dates-(\d{4})\.txt$/);
+      const sourceMatch: RegExpMatchArray | null = file.match(
+        /^event-dates-(\d{4})\.txt$/
+      );
       if (sourceMatch) {
         sourceFiles.push({ file, year: parseInt(sourceMatch[1]) });
       }
-      const archiveMatch: RegExpMatchArray | null = file.match(/^event-dates-archive-(\d{4})\.txt$/);
+      const archiveMatch: RegExpMatchArray | null = file.match(
+        /^event-dates-archive-(\d{4})\.txt$/
+      );
       if (archiveMatch) {
         archiveFiles.push({ file, year: parseInt(archiveMatch[1]) });
       }
@@ -159,14 +183,20 @@ class ValidationService {
     sourceFiles.sort((a, b) => b.year - a.year);
     archiveFiles.sort((a, b) => b.year - a.year);
     const latestSourceYear: number = sourceFiles[0].year;
-    const matchingArchive = archiveFiles.find((a) => a.year === latestSourceYear);
+    const matchingArchive = archiveFiles.find(
+      (a) => a.year === latestSourceYear
+    );
     if (!matchingArchive) {
-      const availableArchiveYears: string = archiveFiles.map((a) => a.year).join(', ');
+      const availableArchiveYears: string = archiveFiles
+        .map((a) => a.year)
+        .join(', ');
       throw new Error(
         `[ERROR-1000011] No matching archive file found for source year ${latestSourceYear}.\nAvailable archive years: ${availableArchiveYears}\nExpected: event-dates-archive-${latestSourceYear}.txt`
       );
     }
-    logUtils.logStatus(`validated: source and archive files exist with matching years (${latestSourceYear})`);
+    logUtils.logStatus(
+      `validated: source and archive files exist with matching years (${latestSourceYear})`
+    );
   }
 }
 

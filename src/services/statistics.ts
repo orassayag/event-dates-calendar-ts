@@ -10,18 +10,29 @@ class StatisticsService {
    * @param sourceFilePath - Path to the source file
    * @param distFilePath - Path to the distribution file
    */
-  public async displayCreateStatistics(sourceFilePath: string, distFilePath: string): Promise<void> {
+  public async displayCreateStatistics(
+    sourceFilePath: string,
+    distFilePath: string
+  ): Promise<void> {
     const sourceStats: FileStats = await this.getFileStats(sourceFilePath);
     const distStats: FileStats = await this.getFileStats(distFilePath);
     const divider: string = '='.repeat(33);
     logUtils.log(divider);
     logUtils.logStatus(`source file: ${sourceStats.fileName}`);
-    logUtils.logStatus(`size: ${sourceStats.size} | days: ${this.formatNumber(sourceStats.days)}`);
-    logUtils.logStatus(`lines: ${this.formatNumber(sourceStats.lines)} | events: ${this.formatNumber(sourceStats.events)}`);
+    logUtils.logStatus(
+      `size: ${sourceStats.size} | days: ${this.formatNumber(sourceStats.days)}`
+    );
+    logUtils.logStatus(
+      `lines: ${this.formatNumber(sourceStats.lines)} | events: ${this.formatNumber(sourceStats.events)}`
+    );
     logUtils.log(divider);
     logUtils.logStatus(`dist file: ${distStats.fileName}`);
-    logUtils.logStatus(`size: ${distStats.size} | days: ${this.formatNumber(distStats.days)}`);
-    logUtils.logStatus(`lines: ${this.formatNumber(distStats.lines)} | events: ${this.formatNumber(distStats.events)}`);
+    logUtils.logStatus(
+      `size: ${distStats.size} | days: ${this.formatNumber(distStats.days)}`
+    );
+    logUtils.logStatus(
+      `lines: ${this.formatNumber(distStats.lines)} | events: ${this.formatNumber(distStats.events)}`
+    );
     logUtils.log(divider);
   }
 
@@ -48,22 +59,36 @@ class StatisticsService {
     const divider: string = '='.repeat(33);
     logUtils.log(divider);
     logUtils.logStatus(`source file: ${sourceStats.fileName}`);
-    logUtils.logStatus(`size: ${sourceStats.size} | days: ${this.formatNumber(sourceStats.days)}`);
-    logUtils.logStatus(`lines: ${this.formatNumber(sourceStats.lines)} | events: ${this.formatNumber(sourceStats.events)}`);
+    logUtils.logStatus(
+      `size: ${sourceStats.size} | days: ${this.formatNumber(sourceStats.days)}`
+    );
+    logUtils.logStatus(
+      `lines: ${this.formatNumber(sourceStats.lines)} | events: ${this.formatNumber(sourceStats.events)}`
+    );
     logUtils.log(divider);
     logUtils.logStatus(`archive file: ${archiveStats.fileName}`);
-    logUtils.logStatus(`size: ${archiveStats.size} | days: ${this.formatNumber(archiveStats.days)}`);
-    logUtils.logStatus(`lines: ${this.formatNumber(archiveStats.lines)} | events: ${this.formatNumber(archiveStats.events)}`);
+    logUtils.logStatus(
+      `size: ${archiveStats.size} | days: ${this.formatNumber(archiveStats.days)}`
+    );
+    logUtils.logStatus(
+      `lines: ${this.formatNumber(archiveStats.lines)} | events: ${this.formatNumber(archiveStats.events)}`
+    );
     logUtils.log(divider);
     logUtils.logStatus(`dist file: ${distStats.fileName}`);
-    logUtils.logStatus(`size: ${distStats.size} | days: ${this.formatNumber(distStats.days)}`);
-    logUtils.logStatus(`lines: ${this.formatNumber(distStats.lines)} | events: ${this.formatNumber(distStats.events)}`);
+    logUtils.logStatus(
+      `size: ${distStats.size} | days: ${this.formatNumber(distStats.days)}`
+    );
+    logUtils.logStatus(
+      `lines: ${this.formatNumber(distStats.lines)} | events: ${this.formatNumber(distStats.events)}`
+    );
     logUtils.log(divider);
     if (appliedCounters && appliedCounters.length > 0) {
       logUtils.logStatus(`applied counters: ${appliedCounters.length}`);
       for (const counter of appliedCounters) {
         const exampleTask: string = counter.taskTemplate.trim();
-        logUtils.log(`  - ${exampleTask.substring(0, 50)}${exampleTask.length > 50 ? '...' : ''}`);
+        logUtils.log(
+          `  - ${exampleTask.substring(0, 50)}${exampleTask.length > 50 ? '...' : ''}`
+        );
       }
       logUtils.log(divider);
     }
@@ -92,21 +117,35 @@ class StatisticsService {
    *
    * @param result - StopCounterResult containing file paths and stats
    */
-  public async displayStopCounterStatistics(result: StopCounterResult): Promise<void> {
+  public async displayStopCounterStatistics(
+    result: StopCounterResult
+  ): Promise<void> {
     const { sourceFilePath, distFilePath, stats } = result;
     const sourceStats: FileStats = await this.getFileStats(sourceFilePath);
     const distStats: FileStats = await this.getFileStats(distFilePath);
     const divider: string = '='.repeat(33);
     logUtils.log(divider);
     logUtils.logStatus(`source file: ${sourceStats.fileName.toUpperCase()}`);
-    logUtils.logStatus(`size: ${sourceStats.size} | days: ${this.formatNumber(sourceStats.days)}`);
-    logUtils.logStatus(`lines: ${this.formatNumber(sourceStats.lines)} | events: ${this.formatNumber(sourceStats.events)}`);
-    logUtils.logStatus(`events matched: ${this.formatNumber(stats.eventsMatched)}`);
+    logUtils.logStatus(
+      `size: ${sourceStats.size} | days: ${this.formatNumber(sourceStats.days)}`
+    );
+    logUtils.logStatus(
+      `lines: ${this.formatNumber(sourceStats.lines)} | events: ${this.formatNumber(sourceStats.events)}`
+    );
+    logUtils.logStatus(
+      `events matched: ${this.formatNumber(stats.eventsMatched)}`
+    );
     logUtils.log(divider);
     logUtils.logStatus(`dist file: ${distStats.fileName.toUpperCase()}`);
-    logUtils.logStatus(`size: ${distStats.size} | days: ${this.formatNumber(distStats.days)}`);
-    logUtils.logStatus(`lines: ${this.formatNumber(distStats.lines)} | events: ${this.formatNumber(distStats.events)}`);
-    logUtils.logStatus(`events removed: ${this.formatNumber(stats.eventsRemoved)}`);
+    logUtils.logStatus(
+      `size: ${distStats.size} | days: ${this.formatNumber(distStats.days)}`
+    );
+    logUtils.logStatus(
+      `lines: ${this.formatNumber(distStats.lines)} | events: ${this.formatNumber(distStats.events)}`
+    );
+    logUtils.logStatus(
+      `events removed: ${this.formatNumber(stats.eventsRemoved)}`
+    );
     logUtils.log(divider);
   }
 

@@ -1,6 +1,13 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import { ValidationResult, ValidationStats, FixedLine, ValidationCounterPattern, CounterOccurrence, ValidateAndFixLinesParams } from '../types';
+import {
+  ValidationResult,
+  ValidationStats,
+  FixedLine,
+  ValidationCounterPattern,
+  CounterOccurrence,
+  ValidateAndFixLinesParams,
+} from '../types';
 import { SETTINGS } from '../settings';
 import { fileReaderService } from './fileReader';
 import { pathUtils, logUtils } from '../utils';
@@ -27,7 +34,8 @@ class ValidateService {
   public async validate(): Promise<ValidationResult> {
     const sourceFilePath: string = await this.findAndValidateSourceFile();
     logUtils.logStatus(`validating file: ${path.basename(sourceFilePath)}`);
-    const sourceLines: string[] = await fileReaderService.readFile(sourceFilePath);
+    const sourceLines: string[] =
+      await fileReaderService.readFile(sourceFilePath);
     const stats: ValidationStats = {
       totalLines: sourceLines.length,
       totalEvents: 0,
@@ -41,7 +49,8 @@ class ValidateService {
     };
     const fixedLines: FixedLine[] = [];
     logUtils.logStatus('detecting counters');
-    const counterPatterns: Map<string, ValidationCounterPattern> = this.detectCounters(sourceLines);
+    const counterPatterns: Map<string, ValidationCounterPattern> =
+      this.detectCounters(sourceLines);
     logUtils.logStatus(`found ${counterPatterns.size} counter patterns`);
     logUtils.logStatus('validating and fixing formatting');
     const validatedLines: string[] = this.validateAndFixLines({
@@ -87,7 +96,9 @@ class ValidateService {
     try {
       await fs.access(filePath);
     } catch {
-      throw new Error(`[ERROR-1000013] Source file not accessible: ${filePath}`);
+      throw new Error(
+        `[ERROR-1000013] Source file not accessible: ${filePath}`
+      );
     }
     this.year = sourceYear;
     return filePath;
@@ -99,7 +110,9 @@ class ValidateService {
    * @param lines - Raw source file lines
    * @returns Map of event text to ValidationCounterPattern for detected counters
    */
-  private detectCounters(lines: string[]): Map<string, ValidationCounterPattern> {
+  private detectCounters(
+    lines: string[]
+  ): Map<string, ValidationCounterPattern> {
     const counterCandidates: Map<string, CounterOccurrence[]> = new Map();
     let inEventsSection: boolean = false;
     let currentDate: string = '';
@@ -113,18 +126,21 @@ class ValidateService {
       if (!inEventsSection) {
         continue;
       }
-      const dateMatch: RegExpMatchArray | null = trimmedLine.match(DAY_TITLE_PATTERN);
+      const dateMatch: RegExpMatchArray | null =
+        trimmedLine.match(DAY_TITLE_PATTERN);
       if (dateMatch) {
         currentDate = `${dateMatch[1]}/${dateMatch[2]}/${dateMatch[3]}`;
         continue;
       }
-      const counterMatch: RegExpMatchArray | null = trimmedLine.match(COUNTER_PATTERN);
+      const counterMatch: RegExpMatchArray | null =
+        trimmedLine.match(COUNTER_PATTERN);
       if (counterMatch) {
         const prefix: string = counterMatch[1];
         const valueStr: string = counterMatch[2];
         const suffix: string = counterMatch[3];
         const eventText: string = prefix + suffix;
-        const value: number | '###' = valueStr === '###' ? '###' : parseInt(valueStr);
+        const value: number | '###' =
+          valueStr === '###' ? '###' : parseInt(valueStr);
         if (!counterCandidates.has(eventText)) {
           counterCandidates.set(eventText, []);
         }
@@ -144,11 +160,14 @@ class ValidateService {
         .map((occ: CounterOccurrence) => occ.value as number);
       if (numericOccurrences.length >= 10) {
         const uniqueValues: Set<number> = new Set(numericOccurrences);
-        const sortedUniqueValues: number[] = Array.from(uniqueValues).sort((a: number, b: number) => a - b);
+        const sortedUniqueValues: number[] = Array.from(uniqueValues).sort(
+          (a: number, b: number) => a - b
+        );
         if (sortedUniqueValues.length >= 10) {
           let isSequential: boolean = true;
           for (let i: number = 1; i < sortedUniqueValues.length; i++) {
-            const diff: number = sortedUniqueValues[i] - sortedUniqueValues[i - 1];
+            const diff: number =
+              sortedUniqueValues[i] - sortedUniqueValues[i - 1];
             if (diff > 2) {
               isSequential = false;
               break;
@@ -156,7 +175,8 @@ class ValidateService {
           }
           if (isSequential) {
             const firstOccurrence: CounterOccurrence = occurrences[0];
-            const match: RegExpMatchArray | null = firstOccurrence.fullText.match(COUNTER_PATTERN);
+            const match: RegExpMatchArray | null =
+              firstOccurrence.fullText.match(COUNTER_PATTERN);
             if (match) {
               const prefix: string = match[1];
               const suffix: string = match[3];
@@ -203,7 +223,8 @@ class ValidateService {
         previousLineWasBlank = false;
         continue;
       }
-      const dateMatch: RegExpMatchArray | null = trimmedLine.match(DAY_TITLE_PATTERN);
+      const dateMatch: RegExpMatchArray | null =
+        trimmedLine.match(DAY_TITLE_PATTERN);
       if (dateMatch) {
         stats.totalDays++;
         validatedLines.push(line);
@@ -233,7 +254,11 @@ class ValidateService {
           wasFixed = true;
         }
         const linePrefix: string = startsWithAsterisk ? '*' : '-';
-        if (trimmedLine.includes(' *') || trimmedLine.includes('*,') || trimmedLine.includes('*.')) {
+        if (
+          trimmedLine.includes(' *') ||
+          trimmedLine.includes('*,') ||
+          trimmedLine.includes('*.')
+        ) {
           const originalLineBeforeFix: string = line;
           line = line.trim();
           if (line.startsWith('-') || line.startsWith('*')) {
@@ -296,7 +321,9 @@ class ValidateService {
           continue;
         }
         seenEventsInDay.add(normalizedForDupCheck);
-        const counterMatch: RegExpMatchArray | null = line.trim().match(COUNTER_PATTERN);
+        const counterMatch: RegExpMatchArray | null = line
+          .trim()
+          .match(COUNTER_PATTERN);
         if (counterMatch) {
           const prefix: string = counterMatch[1];
           const valueStr: string = counterMatch[2];
@@ -308,7 +335,8 @@ class ValidateService {
               continue;
             }
             const currentValue: number = parseInt(valueStr);
-            const pattern: ValidationCounterPattern = counterPatterns.get(eventText)!;
+            const pattern: ValidationCounterPattern =
+              counterPatterns.get(eventText)!;
             if (counterTracking.has(eventText)) {
               const previousValue: number = counterTracking.get(eventText)!;
               const expectedValue: number = previousValue + 1;
@@ -374,7 +402,10 @@ class ValidateService {
    * @returns Promise resolving to the output file path
    */
   private async writeValidatedFile(lines: string[]): Promise<string> {
-    const filePath: string = pathUtils.getJoinPath(distPath, `event-dates-${this.year}.txt`);
+    const filePath: string = pathUtils.getJoinPath(
+      distPath,
+      `event-dates-${this.year}.txt`
+    );
     await this.ensureDirectoryExists(distPath);
     await this.deleteFileIfExists(filePath);
     await fs.writeFile(filePath, lines.join('\n'), 'utf-8');

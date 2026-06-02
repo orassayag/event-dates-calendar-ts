@@ -9,6 +9,7 @@ Everyone is welcome to contribute to this project. Contributing doesn't just mea
 ### Reporting Issues
 
 If you find a bug or have a feature request:
+
 1. Check if the issue already exists in the [GitHub Issues](https://github.com/orassayag/event-dates-calendar-ts/issues)
 2. If not, create a new issue with:
    - Clear title and description
@@ -32,11 +33,13 @@ If you find a bug or have a feature request:
 ### Code Style Guidelines
 
 This project uses:
+
 - **TypeScript** with strict type checking
 - **ESLint** for code quality
 - **Prettier** for code formatting
 
 Before submitting:
+
 ```bash
 # Format your code
 pnpm format
@@ -65,6 +68,7 @@ pnpm run sync
 ### Adding New Features
 
 When adding new features:
+
 1. Create appropriate types in `src/types/`
 2. Add service logic in `src/services/`
 3. Update scripts in `src/scripts/` if needed
@@ -75,6 +79,7 @@ When adding new features:
 ### Error Code Management
 
 When adding new errors:
+
 1. Use the next available error code from `misc/error_index.txt`
 2. Format: `[ERROR-XXXXXXX]` at the start of the error message
 3. Document the error in `misc/error_index.txt`
@@ -84,9 +89,9 @@ When adding new errors:
 
 Please feel free to contact me with any question, comment, pull-request, issue, or any other thing you have in mind.
 
-* Or Assayag <orassayag@gmail.com>
-* GitHub: https://github.com/orassayag
-* StackOverflow: https://stackoverflow.com/users/4442606/or-assayag?tab=profile
-* LinkedIn: https://linkedin.com/in/orassayag
+- Or Assayag <orassayag@gmail.com>
+- GitHub: https://github.com/orassayag
+- StackOverflow: https://stackoverflow.com/users/4442606/or-assayag?tab=profile
+- LinkedIn: https://linkedin.com/in/orassayag
 
 Thank you for contributing! 🙏

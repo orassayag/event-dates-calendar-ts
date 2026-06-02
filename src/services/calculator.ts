@@ -13,7 +13,10 @@ class CalculatorService {
    * @param archiveLines - Raw lines from the archive file
    * @returns Map of pattern string to CalculatorState with the highest lastCount per pattern
    */
-  public buildCalculatorState(sourceLines: string[], archiveLines: string[]): Map<string, CalculatorState> {
+  public buildCalculatorState(
+    sourceLines: string[],
+    archiveLines: string[]
+  ): Map<string, CalculatorState> {
     const calculatorMap: Map<string, CalculatorState> = new Map();
     const allLines: string[] = [...sourceLines, ...archiveLines];
     for (const line of allLines) {
@@ -21,7 +24,8 @@ class CalculatorService {
       if (!trimmedLine.startsWith('-')) {
         continue;
       }
-      const match: RegExpMatchArray | null = trimmedLine.match(CALCULATOR_PATTERN);
+      const match: RegExpMatchArray | null =
+        trimmedLine.match(CALCULATOR_PATTERN);
       if (!match) {
         continue;
       }
@@ -34,7 +38,8 @@ class CalculatorService {
       if (isNaN(count)) {
         continue;
       }
-      const existingState: CalculatorState | undefined = calculatorMap.get(pattern);
+      const existingState: CalculatorState | undefined =
+        calculatorMap.get(pattern);
       if (!existingState || count > existingState.lastCount) {
         calculatorMap.set(pattern, {
           pattern,
@@ -53,7 +58,10 @@ class CalculatorService {
    * @param calculatorMap - Map of pattern to CalculatorState (mutated with new currentCount values)
    * @returns Array of tasks with placeholders replaced by counter values and dots followed by asterisk
    */
-  public replaceCalculatorsInTasks(tasks: string[], calculatorMap: Map<string, CalculatorState>): string[] {
+  public replaceCalculatorsInTasks(
+    tasks: string[],
+    calculatorMap: Map<string, CalculatorState>
+  ): string[] {
     return tasks.map((task: string) => {
       if (!task.includes(CALCULATOR_PLACEHOLDER)) {
         return task;
@@ -69,7 +77,9 @@ class CalculatorService {
         calculatorMap.set(pattern, state);
       }
       state.currentCount++;
-      return task.replace(CALCULATOR_PLACEHOLDER, state.currentCount.toString()).replace(/\.$/, '. *');
+      return task
+        .replace(CALCULATOR_PLACEHOLDER, state.currentCount.toString())
+        .replace(/\.$/, '. *');
     });
   }
 

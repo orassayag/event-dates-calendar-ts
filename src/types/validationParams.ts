@@ -1,4 +1,9 @@
-import { ValidationStats, FixedLine, ValidationCounterPattern, StopCounterStats } from './index';
+import {
+  ValidationStats,
+  FixedLine,
+  ValidationCounterPattern,
+  StopCounterStats,
+} from './index';
 
 export type ValidateAndFixLinesParams = {
   lines: string[];

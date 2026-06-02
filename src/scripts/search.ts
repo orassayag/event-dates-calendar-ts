@@ -43,10 +43,14 @@ class SearchScript {
       logUtils.log('No matches found.');
     } else {
       for (const match of fileMatches) {
-        const displayContent: string = textUtils.containsHebrew(match.lineContent)
+        const displayContent: string = textUtils.containsHebrew(
+          match.lineContent
+        )
           ? textUtils.reverseForRTL(match.lineContent)
           : match.lineContent;
-        logUtils.log(`${match.fileName} | Line ${match.lineNumber} | ${displayContent}.`);
+        logUtils.log(
+          `${match.fileName} | Line ${match.lineNumber} | ${displayContent}.`
+        );
       }
     }
     logUtils.log(divider);

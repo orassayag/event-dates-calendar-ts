@@ -1,4 +1,8 @@
-import { validateService, statisticsService, validationService } from '../services';
+import {
+  validateService,
+  statisticsService,
+  validationService,
+} from '../services';
 import { ValidationResult } from '../types';
 import { logUtils, systemUtils } from '../utils';
 
@@ -34,19 +38,33 @@ class ValidateScript {
    */
   private async displayStatistics(result: ValidationResult): Promise<void> {
     const { sourceFilePath, distFilePath, fixedLines, stats } = result;
-    const sourceStats: any = await statisticsService['getFileStats'](sourceFilePath);
-    const distStats: any = await statisticsService['getFileStats'](distFilePath);
+    const sourceStats: any =
+      await statisticsService['getFileStats'](sourceFilePath);
+    const distStats: any =
+      await statisticsService['getFileStats'](distFilePath);
     const divider: string = '='.repeat(33);
     logUtils.log(divider);
     logUtils.logStatus(`source file: ${sourceStats.fileName.toUpperCase()}`);
-    logUtils.logStatus(`size: ${sourceStats.size} | days: ${this.formatNumber(sourceStats.days)}`);
-    logUtils.logStatus(`lines: ${this.formatNumber(sourceStats.lines)} | events: ${this.formatNumber(sourceStats.events)}`);
+    logUtils.logStatus(
+      `size: ${sourceStats.size} | days: ${this.formatNumber(sourceStats.days)}`
+    );
+    logUtils.logStatus(
+      `lines: ${this.formatNumber(sourceStats.lines)} | events: ${this.formatNumber(sourceStats.events)}`
+    );
     logUtils.log(divider);
     logUtils.logStatus(`dist file: ${distStats.fileName.toUpperCase()}`);
-    logUtils.logStatus(`size: ${distStats.size} | days: ${this.formatNumber(distStats.days)}`);
-    logUtils.logStatus(`lines: ${this.formatNumber(distStats.lines)} | events: ${this.formatNumber(distStats.events)}`);
-    logUtils.logStatus(`missing start: ${stats.missingStart} | missing end: ${stats.missingEnd}`);
-    logUtils.logStatus(`duplicate lines removed: ${stats.duplicateLinesRemoved}`);
+    logUtils.logStatus(
+      `size: ${distStats.size} | days: ${this.formatNumber(distStats.days)}`
+    );
+    logUtils.logStatus(
+      `lines: ${this.formatNumber(distStats.lines)} | events: ${this.formatNumber(distStats.events)}`
+    );
+    logUtils.logStatus(
+      `missing start: ${stats.missingStart} | missing end: ${stats.missingEnd}`
+    );
+    logUtils.logStatus(
+      `duplicate lines removed: ${stats.duplicateLinesRemoved}`
+    );
     logUtils.logStatus(`fixed lines count: ${stats.fixedLinesCount}`);
     if (fixedLines.length > 0) {
       logUtils.logStatus('fixed lines');

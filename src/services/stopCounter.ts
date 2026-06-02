@@ -1,6 +1,12 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import { StopCounterResult, StopCounterStats, ValidationCounterPattern, CounterOccurrence, ProcessLinesParams } from '../types';
+import {
+  StopCounterResult,
+  StopCounterStats,
+  ValidationCounterPattern,
+  CounterOccurrence,
+  ProcessLinesParams,
+} from '../types';
 import { SETTINGS } from '../settings';
 import { fileReaderService } from './fileReader';
 import { pathUtils, logUtils } from '../utils';
@@ -31,7 +37,8 @@ class StopCounterService {
     const sourceFilePath: string = await this.findAndValidateSourceFile();
     logUtils.logStatus(`processing file: ${path.basename(sourceFilePath)}`);
     this.parseStopDate();
-    const sourceLines: string[] = await fileReaderService.readFile(sourceFilePath);
+    const sourceLines: string[] =
+      await fileReaderService.readFile(sourceFilePath);
     const stats: StopCounterStats = {
       totalLines: sourceLines.length,
       totalEvents: 0,
@@ -40,11 +47,15 @@ class StopCounterService {
       eventsRemoved: 0,
     };
     logUtils.logStatus('detecting counters');
-    const counterPatterns: Map<string, ValidationCounterPattern> = this.detectCounters(sourceLines);
+    const counterPatterns: Map<string, ValidationCounterPattern> =
+      this.detectCounters(sourceLines);
     logUtils.logStatus(`found ${counterPatterns.size} counter patterns`);
-    const targetPattern: ValidationCounterPattern | undefined = this.findTargetPattern(counterPatterns);
+    const targetPattern: ValidationCounterPattern | undefined =
+      this.findTargetPattern(counterPatterns);
     if (!targetPattern) {
-      logUtils.logStatus(`warning: counter pattern "${counterPatternText}" not found in file`);
+      logUtils.logStatus(
+        `warning: counter pattern "${counterPatternText}" not found in file`
+      );
     }
     logUtils.logStatus('processing and removing counter events');
     const processedLines: string[] = this.processLines({
@@ -88,7 +99,9 @@ class StopCounterService {
     try {
       await fs.access(filePath);
     } catch {
-      throw new Error(`[ERROR-1000020] Source file not accessible: ${filePath}`);
+      throw new Error(
+        `[ERROR-1000020] Source file not accessible: ${filePath}`
+      );
     }
     this.year = sourceYear;
     return filePath;
@@ -104,7 +117,9 @@ class StopCounterService {
       this.stopDateValue = 'all';
       return;
     }
-    const dateMatch: RegExpMatchArray | null = stopDate.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    const dateMatch: RegExpMatchArray | null = stopDate.match(
+      /^(\d{2})\/(\d{2})\/(\d{4})$/
+    );
     if (!dateMatch) {
       throw new Error(
         `[ERROR-1000021] Invalid stopDate format: "${stopDate}". Expected DD/MM/YYYY or "all"`
@@ -122,7 +137,9 @@ class StopCounterService {
    * @param lines - Raw source file lines
    * @returns Map of event text to ValidationCounterPattern for detected counters
    */
-  private detectCounters(lines: string[]): Map<string, ValidationCounterPattern> {
+  private detectCounters(
+    lines: string[]
+  ): Map<string, ValidationCounterPattern> {
     const counterCandidates: Map<string, CounterOccurrence[]> = new Map();
     let inEventsSection: boolean = false;
     let currentDate: string = '';
@@ -136,18 +153,21 @@ class StopCounterService {
       if (!inEventsSection) {
         continue;
       }
-      const dateMatch: RegExpMatchArray | null = trimmedLine.match(DAY_TITLE_PATTERN);
+      const dateMatch: RegExpMatchArray | null =
+        trimmedLine.match(DAY_TITLE_PATTERN);
       if (dateMatch) {
         currentDate = `${dateMatch[1]}/${dateMatch[2]}/${dateMatch[3]}`;
         continue;
       }
-      const counterMatch: RegExpMatchArray | null = trimmedLine.match(COUNTER_PATTERN);
+      const counterMatch: RegExpMatchArray | null =
+        trimmedLine.match(COUNTER_PATTERN);
       if (counterMatch) {
         const prefix: string = counterMatch[1];
         const valueStr: string = counterMatch[2];
         const suffix: string = counterMatch[3];
         const eventText: string = prefix + suffix;
-        const value: number | '###' = valueStr === '###' ? '###' : parseInt(valueStr);
+        const value: number | '###' =
+          valueStr === '###' ? '###' : parseInt(valueStr);
         if (!counterCandidates.has(eventText)) {
           counterCandidates.set(eventText, []);
         }
@@ -167,11 +187,14 @@ class StopCounterService {
         .map((occ: CounterOccurrence) => occ.value as number);
       if (numericOccurrences.length >= 10) {
         const uniqueValues: Set<number> = new Set(numericOccurrences);
-        const sortedUniqueValues: number[] = Array.from(uniqueValues).sort((a: number, b: number) => a - b);
+        const sortedUniqueValues: number[] = Array.from(uniqueValues).sort(
+          (a: number, b: number) => a - b
+        );
         if (sortedUniqueValues.length >= 10) {
           let isSequential: boolean = true;
           for (let i: number = 1; i < sortedUniqueValues.length; i++) {
-            const diff: number = sortedUniqueValues[i] - sortedUniqueValues[i - 1];
+            const diff: number =
+              sortedUniqueValues[i] - sortedUniqueValues[i - 1];
             if (diff > 2) {
               isSequential = false;
               break;
@@ -179,7 +202,8 @@ class StopCounterService {
           }
           if (isSequential) {
             const firstOccurrence: CounterOccurrence = occurrences[0];
-            const match: RegExpMatchArray | null = firstOccurrence.fullText.match(COUNTER_PATTERN);
+            const match: RegExpMatchArray | null =
+              firstOccurrence.fullText.match(COUNTER_PATTERN);
             if (match) {
               const prefix: string = match[1];
               const suffix: string = match[3];
@@ -205,11 +229,16 @@ class StopCounterService {
    * @param counterPatterns - Map of detected counter patterns
    * @returns Matching ValidationCounterPattern or undefined if not found
    */
-  private findTargetPattern(counterPatterns: Map<string, ValidationCounterPattern>): ValidationCounterPattern | undefined {
+  private findTargetPattern(
+    counterPatterns: Map<string, ValidationCounterPattern>
+  ): ValidationCounterPattern | undefined {
     const normalizedTarget: string = this.normalizeText(counterPatternText);
     for (const pattern of counterPatterns.values()) {
       const normalizedPattern: string = this.normalizeText(pattern.eventText);
-      if (normalizedPattern.includes(normalizedTarget) || normalizedTarget.includes(normalizedPattern)) {
+      if (
+        normalizedPattern.includes(normalizedTarget) ||
+        normalizedTarget.includes(normalizedPattern)
+      ) {
         return pattern;
       }
     }
@@ -249,7 +278,8 @@ class StopCounterService {
         processedLines.push(line);
         continue;
       }
-      const dateMatch: RegExpMatchArray | null = trimmedLine.match(DAY_TITLE_PATTERN);
+      const dateMatch: RegExpMatchArray | null =
+        trimmedLine.match(DAY_TITLE_PATTERN);
       if (dateMatch) {
         stats.totalDays++;
         const day: number = parseInt(dateMatch[1]);
@@ -262,7 +292,8 @@ class StopCounterService {
       if (EVENT_LINE_PATTERN.test(trimmedLine)) {
         stats.totalEvents++;
         if (targetPattern) {
-          let counterMatch: RegExpMatchArray | null = trimmedLine.match(COUNTER_PATTERN);
+          let counterMatch: RegExpMatchArray | null =
+            trimmedLine.match(COUNTER_PATTERN);
           if (!counterMatch) {
             counterMatch = trimmedLine.match(COUNTER_PATTERN_NO_ASTERISK);
           }
@@ -310,7 +341,10 @@ class StopCounterService {
    * @returns Promise resolving to the output file path
    */
   private async writeOutputFile(lines: string[]): Promise<string> {
-    const filePath: string = pathUtils.getJoinPath(distPath, `event-dates-${this.year}.txt`);
+    const filePath: string = pathUtils.getJoinPath(
+      distPath,
+      `event-dates-${this.year}.txt`
+    );
     await this.ensureDirectoryExists(distPath);
     await this.deleteFileIfExists(filePath);
     await fs.writeFile(filePath, lines.join('\n'), 'utf-8');

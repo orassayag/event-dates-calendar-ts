@@ -10,7 +10,12 @@ import {
   pastChargesSectionSeparator,
   sectionDividerSeparator,
 } from '../separators';
-import { CalendarEvent, EventsAndData, EventType, ExtractSectionEventsParams } from '../types';
+import {
+  CalendarEvent,
+  EventsAndData,
+  EventType,
+  ExtractSectionEventsParams,
+} from '../types';
 import { textUtils } from '../utils';
 import { SETTINGS } from '../settings';
 import { EXPIRATION_KEYWORDS_REGEX } from '../data';
@@ -42,9 +47,11 @@ class SourceService {
    */
   private processLines(lines: string[]): EventsAndData {
     const separatorIndex: number = this.findEventsSeparatorIndex(lines);
-    const { events: expirationEvents, headerLines, futureEventLines } = this.processHeaderSection(
-      lines.slice(0, separatorIndex + 2)
-    );
+    const {
+      events: expirationEvents,
+      headerLines,
+      futureEventLines,
+    } = this.processHeaderSection(lines.slice(0, separatorIndex + 2));
     const { events: regularEvents, dataLines } = this.processDataSection(
       lines.slice(separatorIndex + 2)
     );
@@ -63,8 +70,8 @@ class SourceService {
    * @returns Index of the events separator line, or -1 if not found
    */
   private findEventsSeparatorIndex(lines: string[]): number {
-    return lines.findIndex(
-      (line: string) => textUtils.cleanLine(line).includes(eventsSectionSeparator)
+    return lines.findIndex((line: string) =>
+      textUtils.cleanLine(line).includes(eventsSectionSeparator)
     );
   }
 
@@ -141,7 +148,8 @@ class SourceService {
         continue;
       }
       if (inFutureEventsSection) {
-        const futureEventYear: number | undefined = this.extractYearFromLine(line);
+        const futureEventYear: number | undefined =
+          this.extractYearFromLine(line);
         if (futureEventYear && futureEventYear > targetYear) {
           futureEventLines.push(rawLine);
           skipNextEmptyLine = true;
@@ -212,7 +220,9 @@ class SourceService {
    * @param params - ExtractSectionEventsParams (lines, startSeparator, endSeparator, processLineFunc)
    * @returns Array of CalendarEvent extracted from the section
    */
-  private extractSectionEvents(params: ExtractSectionEventsParams): CalendarEvent[] {
+  private extractSectionEvents(
+    params: ExtractSectionEventsParams
+  ): CalendarEvent[] {
     const { lines, startSeparator, endSeparator, processLineFunc } = params;
     const events: CalendarEvent[] = [];
     let inSection: boolean = false;

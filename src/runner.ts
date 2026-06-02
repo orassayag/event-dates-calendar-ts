@@ -13,14 +13,18 @@ initiate();
 try {
   const scriptModule = await import(`./scripts/${scriptName}.js`);
   if (!scriptModule.default || typeof scriptModule.default.run !== 'function') {
-    console.error(`Error: Script "${scriptName}" does not export a valid script object with a run() method`);
+    console.error(
+      `Error: Script "${scriptName}" does not export a valid script object with a run() method`
+    );
     process.exit(1);
   }
   await scriptModule.default.run();
 } catch (error) {
   if (error.code === 'ERR_MODULE_NOT_FOUND') {
     console.error(`Error: Script "${scriptName}" not found in src/scripts/`);
-    console.error('Available scripts: create, sync, validate, stop-counter, search');
+    console.error(
+      'Available scripts: create, sync, validate, stop-counter, search'
+    );
   } else {
     console.error(`Error running script "${scriptName}":`, error);
   }

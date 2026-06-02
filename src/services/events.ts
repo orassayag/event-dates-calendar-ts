@@ -57,7 +57,9 @@ class EventsService {
         const matchingEvents: CalendarEvent[] = allEvents.filter(
           (e: CalendarEvent) => e.day === day && e.month === month
         );
-        const hasHanukkah: boolean = matchingEvents.some((e: CalendarEvent) => e.text?.includes(HANUKKAH));
+        const hasHanukkah: boolean = matchingEvents.some((e: CalendarEvent) =>
+          e.text?.includes(HANUKKAH)
+        );
         if (hasHanukkah) {
           if (lastHanukkahDayCounter === dayCounter - 1) {
             hanukkahCounter++;
@@ -88,14 +90,18 @@ class EventsService {
    * @returns EventText with date title and formatted lines
    */
   private syncEvent(params: SyncEventParams): EventText {
-    const { events, tasks, day, month, dayCounter, hanukkahCandleIndex } = params;
+    const { events, tasks, day, month, dayCounter, hanukkahCandleIndex } =
+      params;
     const lines: string[] = [];
     const currentDate: Date = new Date(targetYear, month - 1, day);
     const { hebrew: dayOfWeekHebrew } =
       formatterService.getDayOfWeek(currentDate);
     const sortedEvents: CalendarEvent[] = this.sortEventsByPriority(events);
     for (const event of sortedEvents) {
-      const formattedText: string = formatterService.formatEventText(event, hanukkahCandleIndex);
+      const formattedText: string = formatterService.formatEventText(
+        event,
+        hanukkahCandleIndex
+      );
       if (formattedText) {
         lines.push(formattedText);
       }
@@ -175,7 +181,9 @@ class EventsService {
    * @param params - ApplicableTasksParams (tasks, day, month, date)
    * @returns Array of routine tasks applicable to the given date
    */
-  private getApplicableTasksForDate(params: ApplicableTasksParams): RoutineTask[] {
+  private getApplicableTasksForDate(
+    params: ApplicableTasksParams
+  ): RoutineTask[] {
     const { tasks, day, month, date } = params;
     const applicableTasks: RoutineTask[] = [];
     applicableTasks.push(...this.getTasksByType(tasks, RoutineType.DAY));
@@ -183,19 +191,27 @@ class EventsService {
       applicableTasks.push(...this.getTasksByType(tasks, RoutineType.WEEKEND));
     }
     if (timeUtils.isAlternatingWeekFriday(date)) {
-      applicableTasks.push(...this.getTasksByType(tasks, RoutineType.WEEKEND_ALT));
+      applicableTasks.push(
+        ...this.getTasksByType(tasks, RoutineType.WEEKEND_ALT)
+      );
     }
     if (timeUtils.isLastDayOfMonth({ day, month, year: targetYear })) {
-      applicableTasks.push(...this.getTasksByType(tasks, RoutineType.END_MONTH));
+      applicableTasks.push(
+        ...this.getTasksByType(tasks, RoutineType.END_MONTH)
+      );
     }
     if (timeUtils.isQuarterEnd(day, month)) {
       applicableTasks.push(...this.getTasksByType(tasks, RoutineType.QUARTER));
     }
     if (timeUtils.isHalfYearEnd(day, month)) {
-      applicableTasks.push(...this.getTasksByType(tasks, RoutineType.HALF_YEAR));
+      applicableTasks.push(
+        ...this.getTasksByType(tasks, RoutineType.HALF_YEAR)
+      );
     }
     if (timeUtils.isStartOfYear(day, month)) {
-      applicableTasks.push(...this.getTasksByType(tasks, RoutineType.START_YEAR));
+      applicableTasks.push(
+        ...this.getTasksByType(tasks, RoutineType.START_YEAR)
+      );
     }
     if (timeUtils.isEndOfYear(day, month)) {
       applicableTasks.push(...this.getTasksByType(tasks, RoutineType.END_YEAR));

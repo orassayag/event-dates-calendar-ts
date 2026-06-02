@@ -1,4 +1,8 @@
-import { stopCounterService, statisticsService, validationService } from '../services';
+import {
+  stopCounterService,
+  statisticsService,
+  validationService,
+} from '../services';
 import { StopCounterResult } from '../types';
 import { logUtils, systemUtils } from '../utils';
 

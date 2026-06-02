@@ -7,20 +7,24 @@ All notable changes to this project will be documented in this file.
 ### Breaking Changes
 
 #### Date Order Reversed - Chronological Ordering
+
 **IMPORTANT**: The date ordering in all output files has been changed from descending to ascending (chronological) order.
 
 **Previous Behavior (v1.x):**
+
 - Files showed dates from December 31st → January 1st (newest to oldest)
 - December 31st appeared at the bottom
 - January 1st appeared near the top (after header sections)
 
 **New Behavior (v2.0+):**
+
 - Files now show dates from January 1st → December 31st (oldest to newest)
 - January 1st appears at the top (after header sections)
 - December 31st appears at the bottom
 
 **Why This Change?**
 Chronological ordering (earliest to latest) is more intuitive for:
+
 - Navigating through the year sequentially
 - Finding dates by scrolling forward
 - Understanding the progression of time naturally
@@ -29,23 +33,28 @@ Chronological ordering (earliest to latest) is more intuitive for:
 ### Modified Scripts
 
 #### 1. Create Script
+
 - **Changed**: Removed reverse operation on event array
 - **Result**: Generates files in chronological order (Jan 1 → Dec 31)
 
-#### 2. Sync Script  
+#### 2. Sync Script
+
 - **Changed**: Removed logic that restored original reverse order after processing
 - **Result**: Output maintains chronological order after merging source and archive
 - **Counter Logic**: Still correctly increments counters from previous year
 
 #### 3. Validate Script
+
 - **Changed**: Updated counter validation to increment instead of decrement
 - **Result**: Validates counters correctly in ascending date order
 - **Counter Tracking**: Changed from `previousValue - 1` to `previousValue + 1`
 
 #### 4. Search Script
+
 - **No Changes**: Continues to work correctly with new order
 
 #### 5. Stop Counter Script
+
 - **No Changes**: Continues to work correctly with new order
 
 ### Migration Guide
@@ -61,6 +70,7 @@ If you have existing files in the old format (Dec 31 → Jan 1):
 #### Example File Updates
 
 All example files in `examples/` directory have been updated to reflect the new chronological ordering:
+
 - `event-dates-2025.txt` - Now shows Jan 1 at top, Dec 31 at bottom
 - `event-dates-archive-2025.txt` - Already in correct chronological order
 - `event-dates-index.txt` - No changes (not date-dependent)
@@ -68,6 +78,7 @@ All example files in `examples/` directory have been updated to reflect the new 
 ### Documentation Updates
 
 #### Files Updated:
+
 - `README.md` - Added note about chronological ordering feature
 - `INSTRUCTIONS.md` - Updated sync script documentation with date order clarification
 - `examples/README.md` - Added dedicated section explaining date order
@@ -76,12 +87,14 @@ All example files in `examples/` directory have been updated to reflect the new 
 ### Technical Details
 
 #### Counter Logic
+
 - Counters now increment as dates progress from January to December
 - Counter detection still analyzes last 10 days of previous year (Dec 22-31)
 - Counter application correctly calculates days elapsed since Dec 31 of previous year
 - Example: If Dec 31, 2025 shows "יום 909", then Jan 1, 2026 shows "יום 910"
 
 #### File Structure
+
 ```
 Header sections...
 
@@ -114,6 +127,7 @@ Header sections...
 ### Testing
 
 All scripts have been tested and verified:
+
 - ✅ Create script generates files in ascending order
 - ✅ Sync script maintains ascending order with correct counter increments
 - ✅ Validate script validates counters in ascending order
@@ -125,6 +139,7 @@ All scripts have been tested and verified:
 ## [1.0.0] - 2025-2026
 
 ### Initial Release
+
 - Calendar creation from Israeli and US holiday sources
 - Event synchronization with archive files
 - Validation and formatting tools

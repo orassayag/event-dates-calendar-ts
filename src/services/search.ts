@@ -48,7 +48,9 @@ class SearchService {
     try {
       await fs.access(dirPath);
     } catch {
-      throw new Error(`[ERROR-1000023] Sources directory not found: ${dirPath}`);
+      throw new Error(
+        `[ERROR-1000023] Sources directory not found: ${dirPath}`
+      );
     }
     const files: string[] = await fs.readdir(dirPath);
     const textFiles: string[] = files
@@ -64,7 +66,10 @@ class SearchService {
    * @param searchKey - String to search for (case-insensitive)
    * @returns Promise resolving to array of FileMatch with fileName, lineNumber, and lineContent
    */
-  private async searchInFile(filePath: string, searchKey: string): Promise<FileMatch[]> {
+  private async searchInFile(
+    filePath: string,
+    searchKey: string
+  ): Promise<FileMatch[]> {
     const lines: string[] = await fileReaderService.readFile(filePath);
     const fileName: string = path.basename(filePath);
     const matches: FileMatch[] = [];

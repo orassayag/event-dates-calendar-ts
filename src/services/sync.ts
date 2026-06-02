@@ -1,6 +1,12 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import { DayData, SyncResult, MergeDaysParams, WriteMergedFileParams, SyncCounterPattern } from '../types';
+import {
+  DayData,
+  SyncResult,
+  MergeDaysParams,
+  WriteMergedFileParams,
+  SyncCounterPattern,
+} from '../types';
 import { SETTINGS } from '../settings';
 import { fileReaderService } from './fileReader';
 import { calculatorService } from './calculator';
@@ -39,18 +45,28 @@ class SyncService {
     const archiveDays: DayData[] = this.parseDays(archiveLines, true);
     logUtils.logStatus(`detecting counters from previous year: ${year - 1}`);
     const previousYearFilePath: string = await this.findPreviousYearFile(year);
-    const previousYearLines: string[] = await fileReaderService.readFile(previousYearFilePath);
-    const detectedCounters: SyncCounterPattern[] = this.detectCounters(previousYearLines, year - 1);
+    const previousYearLines: string[] =
+      await fileReaderService.readFile(previousYearFilePath);
+    const detectedCounters: SyncCounterPattern[] = this.detectCounters(
+      previousYearLines,
+      year - 1
+    );
     if (detectedCounters.length > 0) {
-      logUtils.logStatus(`detected ${detectedCounters.length} counter(s) to apply`);
+      logUtils.logStatus(
+        `detected ${detectedCounters.length} counter(s) to apply`
+      );
     } else {
       logUtils.logStatus('no counters detected from previous year');
     }
     logUtils.logStatus('merging days and tasks');
-    const { mergedDays, syncedDays, unsyncedDays } = this.mergeDays({
-      sourceDays,
-      archiveDays,
-    }, detectedCounters, year);
+    const { mergedDays, syncedDays, unsyncedDays } = this.mergeDays(
+      {
+        sourceDays,
+        archiveDays,
+      },
+      detectedCounters,
+      year
+    );
     logUtils.logStatus('writing merged file');
     const distFilePath: string = await this.writeMergedFile({
       mergedDays,
@@ -64,7 +80,8 @@ class SyncService {
       mergedDays,
       syncedDays,
       unsyncedDays,
-      appliedCounters: detectedCounters.length > 0 ? detectedCounters : undefined,
+      appliedCounters:
+        detectedCounters.length > 0 ? detectedCounters : undefined,
     };
   }
 
@@ -110,24 +127,38 @@ class SyncService {
     sourceFiles.sort((a, b) => b.year - a.year);
     archiveFiles.sort((a, b) => b.year - a.year);
     const latestSourceFile = sourceFiles[0];
-    const matchingArchive = archiveFiles.find((a) => a.year === latestSourceFile.year);
+    const matchingArchive = archiveFiles.find(
+      (a) => a.year === latestSourceFile.year
+    );
     if (!matchingArchive) {
-      const availableArchiveYears: string = archiveFiles.map((a) => a.year).join(', ');
+      const availableArchiveYears: string = archiveFiles
+        .map((a) => a.year)
+        .join(', ');
       throw new Error(
         `[ERROR-1000016] No matching archive file found for source year ${latestSourceFile.year}.\nAvailable archive years: ${availableArchiveYears}\nExpected: event-dates-archive-${latestSourceFile.year}.txt`
       );
     }
-    const sourceFilePath: string = path.join(sourcesPath, latestSourceFile.file);
-    const archiveFilePath: string = path.join(sourcesPath, matchingArchive.file);
+    const sourceFilePath: string = path.join(
+      sourcesPath,
+      latestSourceFile.file
+    );
+    const archiveFilePath: string = path.join(
+      sourcesPath,
+      matchingArchive.file
+    );
     try {
       await fs.access(sourceFilePath);
     } catch {
-      throw new Error(`[ERROR-1000017] Source file not accessible: ${sourceFilePath}`);
+      throw new Error(
+        `[ERROR-1000017] Source file not accessible: ${sourceFilePath}`
+      );
     }
     try {
       await fs.access(archiveFilePath);
     } catch {
-      throw new Error(`[ERROR-1000018] Archive file not accessible: ${archiveFilePath}`);
+      throw new Error(
+        `[ERROR-1000018] Archive file not accessible: ${archiveFilePath}`
+      );
     }
     return {
       sourceFilePath,
@@ -139,43 +170,70 @@ class SyncService {
   private async findPreviousYearFile(currentYear: number): Promise<string> {
     const previousYear: number = currentYear - 1;
     const previousYearFileName: string = `event-dates-${previousYear}.txt`;
-    const previousYearFilePath: string = path.join(sourcesPath, previousYearFileName);
+    const previousYearFilePath: string = path.join(
+      sourcesPath,
+      previousYearFileName
+    );
     try {
       await fs.access(previousYearFilePath);
       logUtils.logStatus(`found previous year file: ${previousYearFileName}`);
       return previousYearFilePath;
     } catch {
-      throw new Error(`[ERROR-1000019] Previous year file not found: ${previousYearFilePath}. Cannot detect counters for year ${currentYear}.`);
+      throw new Error(
+        `[ERROR-1000019] Previous year file not found: ${previousYearFilePath}. Cannot detect counters for year ${currentYear}.`
+      );
     }
   }
 
-  private detectCounters(previousYearLines: string[], previousYear: number): SyncCounterPattern[] {
-    const previousYearDays: DayData[] = this.parseDays(previousYearLines, false);
+  private detectCounters(
+    previousYearLines: string[],
+    previousYear: number
+  ): SyncCounterPattern[] {
+    const previousYearDays: DayData[] = this.parseDays(
+      previousYearLines,
+      false
+    );
     if (previousYearDays.length < 10) {
       return [];
     }
-    const daysFromPreviousYear: DayData[] = previousYearDays.filter((day: DayData) => day.year === previousYear);
+    const daysFromPreviousYear: DayData[] = previousYearDays.filter(
+      (day: DayData) => day.year === previousYear
+    );
     daysFromPreviousYear.sort((a: DayData, b: DayData) => {
       const dateA: Date = new Date(a.year, a.month - 1, a.day);
       const dateB: Date = new Date(b.year, b.month - 1, b.day);
       return dateA.getTime() - dateB.getTime();
     });
-    const dec31: DayData | undefined = daysFromPreviousYear.find((day: DayData) => day.day === 31 && day.month === 12);
+    const dec31: DayData | undefined = daysFromPreviousYear.find(
+      (day: DayData) => day.day === 31 && day.month === 12
+    );
     if (!dec31) {
       return [];
     }
-    const dec31Index: number = daysFromPreviousYear.findIndex((day: DayData) => day.day === 31 && day.month === 12);
+    const dec31Index: number = daysFromPreviousYear.findIndex(
+      (day: DayData) => day.day === 31 && day.month === 12
+    );
     if (dec31Index < 9) {
       return [];
     }
-    const last10Days: DayData[] = daysFromPreviousYear.slice(dec31Index - 9, dec31Index + 1);
-    const countersFromLastDay: Map<string, { value: number; taskLine: string; position: number }> = new Map();
+    const last10Days: DayData[] = daysFromPreviousYear.slice(
+      dec31Index - 9,
+      dec31Index + 1
+    );
+    const countersFromLastDay: Map<
+      string,
+      { value: number; taskLine: string; position: number }
+    > = new Map();
     dec31.tasks.forEach((task: string, index: number) => {
       const match: RegExpMatchArray | null = task.match(COUNTER_PATTERN);
       if (match) {
         const pattern: string = `${match[1]}NUM${match[3]}`;
         const value: number = parseInt(match[2]);
-        countersFromLastDay.set(pattern, { value, taskLine: task, position: index });
+        countersFromLastDay.set(pattern, {
+          value,
+          taskLine: task,
+          position: index,
+        });
       }
     });
     const validCounters: SyncCounterPattern[] = [];
@@ -210,14 +268,21 @@ class SyncService {
     return validCounters;
   }
 
-  private applyCountersToDay(day: DayData, counters: SyncCounterPattern[], daysElapsed: number): DayData {
+  private applyCountersToDay(
+    day: DayData,
+    counters: SyncCounterPattern[],
+    daysElapsed: number
+  ): DayData {
     if (counters.length === 0) {
       return day;
     }
     let newTasks: string[] = [...day.tasks];
     for (const counter of counters) {
       const newValue: number = counter.baselineValue + daysElapsed;
-      const newTask: string = counter.taskTemplate.replace(/\d+/, newValue.toString());
+      const newTask: string = counter.taskTemplate.replace(
+        /\d+/,
+        newValue.toString()
+      );
       const counterAlreadyExists: boolean = newTasks.some((task: string) => {
         const match: RegExpMatchArray | null = task.match(COUNTER_PATTERN);
         if (!match) {
@@ -227,7 +292,10 @@ class SyncService {
         return taskPattern === counter.pattern;
       });
       if (!counterAlreadyExists) {
-        const insertPosition: number = Math.min(counter.position, newTasks.length);
+        const insertPosition: number = Math.min(
+          counter.position,
+          newTasks.length
+        );
         newTasks.splice(insertPosition, 0, newTask);
       }
     }
@@ -237,12 +305,23 @@ class SyncService {
         return true;
       }
       for (const counter of counters) {
-        const counterMatch: RegExpMatchArray | null = counter.taskTemplate.match(COUNTER_PATTERN);
+        const counterMatch: RegExpMatchArray | null =
+          counter.taskTemplate.match(COUNTER_PATTERN);
         if (counterMatch) {
           const counterTextWithoutNumber: string = `${counterMatch[1]}${counterMatch[3]}`;
-          const taskTextWithoutHashAndNumber: string = task.replace(/###/, '').replace(/\*$/, '').trim();
-          const counterTextWithoutAsterisk: string = counterTextWithoutNumber.replace(/\*$/, '').trim();
-          if (taskTextWithoutHashAndNumber.includes(counterTextWithoutAsterisk) || counterTextWithoutAsterisk.includes(taskTextWithoutHashAndNumber.replace(/-/g, ''))) {
+          const taskTextWithoutHashAndNumber: string = task
+            .replace(/###/, '')
+            .replace(/\*$/, '')
+            .trim();
+          const counterTextWithoutAsterisk: string = counterTextWithoutNumber
+            .replace(/\*$/, '')
+            .trim();
+          if (
+            taskTextWithoutHashAndNumber.includes(counterTextWithoutAsterisk) ||
+            counterTextWithoutAsterisk.includes(
+              taskTextWithoutHashAndNumber.replace(/-/g, '')
+            )
+          ) {
             return false;
           }
         }
@@ -315,7 +394,11 @@ class SyncService {
    * @param params - MergeDaysParams (sourceDays, archiveDays)
    * @returns Object with mergedDays, syncedDays, and unsyncedDays
    */
-  private mergeDays(params: MergeDaysParams, counters: SyncCounterPattern[], currentYear: number): { mergedDays: DayData[]; syncedDays: string[]; unsyncedDays: string[] } {
+  private mergeDays(
+    params: MergeDaysParams,
+    counters: SyncCounterPattern[],
+    currentYear: number
+  ): { mergedDays: DayData[]; syncedDays: string[]; unsyncedDays: string[] } {
     const { sourceDays, archiveDays } = params;
     const syncedDays: string[] = [];
     const unsyncedDays: string[] = [];
@@ -336,7 +419,11 @@ class SyncService {
     }> = [];
     for (let i: number = 0; i < sourceDays.length; i++) {
       const sourceDay: DayData = sourceDays[i];
-      const dayDate: Date = new Date(sourceDay.year, sourceDay.month - 1, sourceDay.day);
+      const dayDate: Date = new Date(
+        sourceDay.year,
+        sourceDay.month - 1,
+        sourceDay.day
+      );
       const isFutureDate: boolean = dayDate > today;
       const normalizedDate: string = this.normalizeDateString(
         sourceDay.dateString
@@ -394,8 +481,15 @@ class SyncService {
         tasks: finalTasks,
       };
       if (!isFutureDate && hadArchiveTasks && counters.length > 0) {
-        const currentDayDate: Date = new Date(sourceDay.year, sourceDay.month - 1, sourceDay.day);
-        const daysElapsed: number = Math.floor((currentDayDate.getTime() - dec31PreviousYear.getTime()) / (1000 * 60 * 60 * 24));
+        const currentDayDate: Date = new Date(
+          sourceDay.year,
+          sourceDay.month - 1,
+          sourceDay.day
+        );
+        const daysElapsed: number = Math.floor(
+          (currentDayDate.getTime() - dec31PreviousYear.getTime()) /
+            (1000 * 60 * 60 * 24)
+        );
         dayToAdd = this.applyCountersToDay(dayToAdd, counters, daysElapsed);
       }
       mergedDays.push(dayToAdd);
@@ -423,7 +517,9 @@ class SyncService {
    * @param params - WriteMergedFileParams (mergedDays, sourceLines, year)
    * @returns Promise resolving to the output file path
    */
-  private async writeMergedFile(params: WriteMergedFileParams): Promise<string> {
+  private async writeMergedFile(
+    params: WriteMergedFileParams
+  ): Promise<string> {
     const { mergedDays, sourceLines, year } = params;
     const lines: string[] = [];
     let inEventsSection: boolean = false;

@@ -22,7 +22,10 @@ class FileWriterService {
       lines.push(headerLine);
       if (headerLine.includes('FUTURE-EVENTS#:')) {
         const nextIndex: number = i + 1;
-        if (nextIndex < headerLines.length && headerLines[nextIndex].includes(sectionDividerSeparator)) {
+        if (
+          nextIndex < headerLines.length &&
+          headerLines[nextIndex].includes(sectionDividerSeparator)
+        ) {
           lines.push(headerLines[nextIndex]);
           i++;
           if (futureEventLines.length > 0) {

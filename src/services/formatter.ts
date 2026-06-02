@@ -1,6 +1,12 @@
 import { CalendarEvent, EventType, FormatDateTitleParams } from '../types';
 import { SETTINGS } from '../settings';
-import { ENGLISH_DAYS, HEBREW_DAYS, VACATION_TEXT, HANUKKAH, HANUKKAH_CANDLES } from '../data/culture';
+import {
+  ENGLISH_DAYS,
+  HEBREW_DAYS,
+  VACATION_TEXT,
+  HANUKKAH,
+  HANUKKAH_CANDLES,
+} from '../data/culture';
 
 const { targetYear } = SETTINGS.create;
 
@@ -12,12 +18,20 @@ class FormatterService {
    * @param hanukkahCandleIndex - Optional index for Hanukkah candle day text
    * @returns Formatted event string with dash prefix and dot suffix, or empty string if no text
    */
-  public formatEventText(event: CalendarEvent, hanukkahCandleIndex?: number): string {
+  public formatEventText(
+    event: CalendarEvent,
+    hanukkahCandleIndex?: number
+  ): string {
     let text: string = event.text;
     if (!text) {
       return '';
     }
-    if (text.includes(HANUKKAH) && hanukkahCandleIndex !== undefined && hanukkahCandleIndex >= 0 && hanukkahCandleIndex < HANUKKAH_CANDLES.length) {
+    if (
+      text.includes(HANUKKAH) &&
+      hanukkahCandleIndex !== undefined &&
+      hanukkahCandleIndex >= 0 &&
+      hanukkahCandleIndex < HANUKKAH_CANDLES.length
+    ) {
       text = `${HANUKKAH} - ${HANUKKAH_CANDLES[hanukkahCandleIndex]}`;
     }
     if (event.subText) {
@@ -42,7 +56,11 @@ class FormatterService {
    * @returns True for birthday, deathday, anniversary
    */
   private requiresYearDisplay(type: EventType): boolean {
-    return [EventType.BIRTHDAY, EventType.DEATHDAY, EventType.ANNIVERSARY].includes(type);
+    return [
+      EventType.BIRTHDAY,
+      EventType.DEATHDAY,
+      EventType.ANNIVERSARY,
+    ].includes(type);
   }
 
   /**
