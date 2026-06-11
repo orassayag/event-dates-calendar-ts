@@ -1,5 +1,5 @@
-import { CalendarEvent } from './calendarEvent';
-import { RoutineTask } from './routineTask';
+import { CalendarEvent } from './index';
+import { RoutineTask } from './index';
 
 export type EventsData = {
   ilEvents: CalendarEvent[];

@@ -1,6 +1,31 @@
-# Instructions
+# Setup and Usage Instructions
 
-## Setup Instructions
+## Table of Contents
+
+1. [System Requirements](#system-requirements)
+2. [Initial Setup](#initial-setup)
+3. [Install Dependencies](#install-dependencies)
+4. [Configuration](#configuration)
+5. [Available Commands](#available-commands)
+6. [Development Commands](#development-commands)
+7. [Script Usage Guide](#script-usage-guide)
+8. [Troubleshooting](#troubleshooting)
+9. [Best Practices](#best-practices)
+10. [Extending the Application](#extending-the-application)
+11. [Documentation](#documentation)
+12. [External Resources](#external-resources)
+13. [Last Updated](#last-updated)
+14. [Version](#version)
+
+## System Requirements
+
+- **Node.js**: Version 18 or higher
+- **Package Manager**: pnpm (recommended) or npm
+- **Operating System**: macOS, Linux, or Windows
+- **Memory**: 2GB RAM minimum
+- **Disk Space**: 500MB for application and dependencies
+
+## Initial Setup
 
 1. Open the project in your IDE (VSCode recommended)
 2. Install dependencies:
@@ -11,6 +36,26 @@
    ```bash
    pnpm build
    ```
+
+## Install Dependencies
+
+**Using pnpm (recommended):**
+
+```bash
+pnpm install
+```
+
+**Using npm:**
+
+```bash
+npm install
+```
+
+**Verify installation:**
+
+```bash
+pnpm build
+```
 
 ## Configuration
 
@@ -24,7 +69,60 @@
    - `counterPatternText`: Pattern for counter events
    - `stopDate`: Date to stop counters (format: DD/MM/YYYY or 'all')
 
-## Running Scripts
+## Available Commands
+
+### Development Commands
+
+**Linting and Formatting:**
+
+```bash
+# Check code style and quality
+pnpm lint
+
+# Format all TypeScript files
+pnpm format
+
+# Check formatting without modifying files
+pnpm format:check
+```
+
+**Building:**
+
+```bash
+# Compile TypeScript to JavaScript
+pnpm build
+```
+
+**Running Scripts:**
+
+```bash
+# Start interactive menu
+pnpm start
+
+# Run a specific script by name
+pnpm script &lt;script-name&gt;
+```
+
+**Built-in Script Shortcuts:**
+
+```bash
+# Create calendar
+pnpm create
+
+# Validate calendar
+pnpm validate
+
+# Sync calendar
+pnpm sync
+
+# Search calendar
+pnpm search
+
+# Stop counter
+pnpm stop-counter
+```
+
+## Script Usage Guide
 
 ### Create New Calendar
 
@@ -239,6 +337,82 @@ pnpm lint
 ```bash
 pnpm format
 ```
+
+## Troubleshooting
+
+### Common Issues and Solutions
+
+**Problem:** "File not found" when trying to read source files
+**Solution:** Verify the paths in `src/settings/settings.ts` are correct
+
+**Problem:** Counter detection not working
+**Solution:** Ensure the previous year's file has the counter pattern consistently for the last 10 days
+
+**Problem:** Hebrew text displaying incorrectly
+**Solution:** Ensure your terminal and text editor are using UTF-8 encoding
+
+**Problem:** Build errors
+**Solution:** Try deleting `node_modules` and reinstalling dependencies with `pnpm install`
+
+### Debugging Tips
+
+1. Check error codes in `misc/error_index.txt`
+2. Review log outputs for detailed error information
+3. Verify all required files exist in the correct locations
+
+## Best Practices
+
+### Before Running Scripts
+
+1. **Backup Files**: Always backup your source and archive files before running sync or validate
+2. **Test First**: Run create script for a test year first to verify everything works
+3. **Validate**: Always run validate after making manual edits
+
+### File Management
+
+1. **Keep Previous Year's File**: Always keep the previous year's calendar file for counter continuation
+2. **Organize Archives**: Keep archive files organized by year
+3. **Use Examples**: Refer to the example files in the `examples/` directory for correct formatting
+
+### Code Quality
+
+1. **Follow TypeScript**: Always use TypeScript for type safety
+2. **Lint and Format**: Run `pnpm lint` and `pnpm format` before committing
+3. **Document**: Add comments for complex logic
+
+## Extending the Application
+
+### Adding New Scripts
+
+1. Create a new script file in `src/scripts/`
+2. Implement your script logic
+3. Register it in `src/scripts/index.ts`
+4. Add it to `package.json` scripts (optional)
+
+### Adding New Services
+
+1. Create a new service file in `src/services/`
+2. Implement your service logic
+3. Export it from `src/services/index.ts`
+
+### Adding New Types
+
+1. Create a new type file in `src/types/`
+2. Define your types
+3. Export them from `src/types/index.ts`
+
+## Documentation
+
+- [README.md](README.md) - Project overview and features
+- [CONTRIBUTING.md](CONTRIBUTING.md) - Development guidelines
+- [CHANGELOG.md](CHANGELOG.md) - Version history
+- [examples/README.md](examples/README.md) - Example files documentation
+
+## External Resources
+
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
+- [Node.js Documentation](https://nodejs.org/docs/)
+- [pnpm Documentation](https://pnpm.io/)
 
 ## Notes
 

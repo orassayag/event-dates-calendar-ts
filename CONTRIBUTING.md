@@ -37,32 +37,24 @@ This project uses:
 - **TypeScript** with strict type checking
 - **ESLint** for code quality
 - **Prettier** for code formatting
+- **InversifyJS** for dependency injection
 
 Before submitting:
 
 ```bash
-# Format your code
 pnpm format
-
-# Check for linting errors
 pnpm lint
-
-# Build to ensure no TypeScript errors
 pnpm build
-
-# Test the scripts
-pnpm run create
-pnpm run validate
-pnpm run sync
+pnpm test
 ```
 
 ### Coding Standards
 
-1. **Functions with 3+ parameters**: Use object parameters with proper types
+1. **Dependency Injection**: Use @injectable decorators for services
 2. **Error handling**: All errors must include unique error codes (see `misc/error_index.txt`)
-3. **JSDoc comments**: All public and private methods must have JSDoc documentation
+3. **Logging**: Use structured Logger instead of console.log
 4. **Type safety**: Avoid using `any` - define proper types
-5. **No comments inside functions**: Keep function bodies clean
+5. **Domain organization**: Place code in appropriate domain folders (not utils/)
 6. **Naming**: Use clear, descriptive names for variables and functions
 
 ### Adding New Features
@@ -70,11 +62,10 @@ pnpm run sync
 When adding new features:
 
 1. Create appropriate types in `src/types/`
-2. Add service logic in `src/services/`
+2. Add service logic in `src/services/` with DI
 3. Update scripts in `src/scripts/` if needed
 4. Add error codes and update `misc/error_index.txt`
-5. Update JSDoc comments
-6. Test thoroughly
+5. Test thoroughly with vitest
 
 ### Error Code Management
 
@@ -83,7 +74,6 @@ When adding new errors:
 1. Use the next available error code from `misc/error_index.txt`
 2. Format: `[ERROR-XXXXXXX]` at the start of the error message
 3. Document the error in `misc/error_index.txt`
-4. Update the "Next Available Error Code" line
 
 ## Questions or Need Help?
 

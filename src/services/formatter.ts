@@ -1,12 +1,16 @@
-import { CalendarEvent, EventType, FormatDateTitleParams } from '../types';
-import { SETTINGS } from '../settings';
+import {
+  CalendarEvent,
+  EventType,
+  FormatDateTitleParams,
+} from '../types/index';
+import { SETTINGS } from '../settings/index';
 import {
   ENGLISH_DAYS,
   HEBREW_DAYS,
   VACATION_TEXT,
   HANUKKAH,
   HANUKKAH_CANDLES,
-} from '../data/culture';
+} from '../data/index';
 
 const { targetYear } = SETTINGS.create;
 

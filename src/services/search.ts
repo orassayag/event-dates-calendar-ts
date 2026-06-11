@@ -1,8 +1,8 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import { SearchResult, FileMatch } from '../types';
-import { SETTINGS } from '../settings';
-import { fileReaderService } from './fileReader';
+import { SearchResult, FileMatch } from '../types/index';
+import { SETTINGS } from '../settings/index';
+import { fileReaderService } from './index';
 
 const { searchKey, sourcesPath } = SETTINGS.search;
 

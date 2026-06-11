@@ -1,5 +1,5 @@
-import { MissingEvent } from '../types';
-import { EVENTS_DIRECTORY } from './culture';
+import { MissingEvent } from '../types/index';
+import { EVENTS_DIRECTORY } from './index';
 
 export const MISSING_EVENTS: MissingEvent[] = [
   {

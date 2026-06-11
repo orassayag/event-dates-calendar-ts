@@ -1,5 +1,5 @@
-import { StaticEvent } from '../types';
-import { EVENTS_DIRECTORY } from './culture';
+import { StaticEvent } from '../types/index';
+import { EVENTS_DIRECTORY } from './index';
 
 export const STATIC_EVENTS: StaticEvent[] = [
   {

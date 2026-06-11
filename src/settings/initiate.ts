@@ -1,5 +1,5 @@
 import { YEAR } from '../place-holders';
-import { SETTINGS } from './settings';
+import { SETTINGS } from './index';
 
 export function initiate(): void {
   const {

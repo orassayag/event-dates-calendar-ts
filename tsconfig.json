@@ -10,7 +10,8 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "declaration": false,
-    "outDir": "dist"
+    "outDir": "dist",
+    "types": ["node", "vitest"]
   },
   "include": ["src"],
   "exclude": ["node_modules", "**/*.spec.ts"]

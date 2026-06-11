@@ -1,4 +1,4 @@
-import { EventType } from './eventType';
+import { EventType } from './index';
 
 export type CalendarEvent = {
   day: number;

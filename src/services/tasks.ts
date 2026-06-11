@@ -1,6 +1,6 @@
-import { RoutineTask, RoutineType, RoutineTypesMap } from '../types';
-import { textUtils } from '../utils';
-import { fileReaderService } from './fileReader';
+import { RoutineTask, RoutineType, RoutineTypesMap } from '../types/index';
+import { textUtils } from '../utils/index';
+import { fileReaderService } from './index';
 
 class TasksService {
   /**

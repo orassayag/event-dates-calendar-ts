@@ -6,11 +6,11 @@ import {
   RoutineType,
   SyncEventParams,
   ApplicableTasksParams,
-} from '../types';
-import { timeUtils } from '../utils';
-import { SETTINGS } from '../settings';
-import { formatterService } from './formatter';
-import { HANUKKAH } from '../data/culture';
+} from '../types/index';
+import { timeUtils } from '../utils/index';
+import { SETTINGS } from '../settings/index';
+import { formatterService } from './index';
+import { HANUKKAH } from '../data/index';
 
 const { targetYear } = SETTINGS.create;
 

@@ -6,10 +6,10 @@ import {
   ValidationCounterPattern,
   CounterOccurrence,
   ProcessLinesParams,
-} from '../types';
-import { SETTINGS } from '../settings';
-import { fileReaderService } from './fileReader';
-import { pathUtils, logUtils } from '../utils';
+} from '../types/index';
+import { SETTINGS } from '../settings/index';
+import { fileReaderService } from './index';
+import { pathUtils, logUtils } from '../utils/index';
 import { eventsSectionSeparator } from '../separators';
 
 const { distPath } = SETTINGS.global;

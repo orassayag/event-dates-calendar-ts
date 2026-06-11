@@ -6,11 +6,11 @@ import {
   MergeDaysParams,
   WriteMergedFileParams,
   SyncCounterPattern,
-} from '../types';
-import { SETTINGS } from '../settings';
-import { fileReaderService } from './fileReader';
-import { calculatorService } from './calculator';
-import { pathUtils, logUtils } from '../utils';
+} from '../types/index';
+import { SETTINGS } from '../settings/index';
+import { fileReaderService } from './index';
+import { calculatorService } from './index';
+import { pathUtils, logUtils } from '../utils/index';
 import { sectionDividerSeparator } from '../separators';
 
 const { distPath } = SETTINGS.global;

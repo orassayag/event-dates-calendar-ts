@@ -1,5 +1,5 @@
-import { DynamicEvent } from '../types';
-import { EVENTS_DIRECTORY } from './culture';
+import { DynamicEvent } from '../types/index';
+import { EVENTS_DIRECTORY } from './index';
 
 export const DYNAMIC_EVENTS: DynamicEvent[] = [
   {

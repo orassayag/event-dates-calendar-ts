@@ -1,4 +1,4 @@
-import { CalendarEvent } from './calendarEvent';
+import { CalendarEvent } from './index';
 
 export type EventsAndData = {
   events: CalendarEvent[];

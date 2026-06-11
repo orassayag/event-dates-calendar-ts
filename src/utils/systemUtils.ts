@@ -1,4 +1,4 @@
-import { logUtils } from './logUtils';
+import { logUtils } from './index';
 
 class SystemUtils {
   /**
