@@ -75,6 +75,12 @@ export const STATIC_EVENTS: StaticEvent[] = [
     startYear: 2001,
   },
   {
+    day: 7,
+    month: 10,
+    text: EVENTS_DIRECTORY.OCTOBER_7_ATTACKS,
+    startYear: 2023,
+  },
+  {
     day: 4,
     month: 11,
     text: EVENTS_DIRECTORY.MEMORIAL_DAY_FOR_THE_DEATH_OF_REBIN,

@@ -93,6 +93,7 @@ export const EVENTS_DIRECTORY = {
   VETERANS_DAY: 'יום הוותיקים',
   THANKSGIVING_DAY: 'יום ההודיה',
   CHRISTMAS_DAY: 'חג המולד',
+  OCTOBER_7_ATTACKS: 'טבח שבעה באוקטובר',
 };
 
 export const US_HOLIDAYS_MAP: Record<string, string> = {
