@@ -3,11 +3,4 @@ allowBuilds:
 ignoredBuiltDependencies:
   - esbuild
 minimumReleaseAgeExclude:
-  - '@typescript-eslint/eslint-plugin@8.70.1'
-  - '@typescript-eslint/parser@8.70.1'
-  - '@typescript-eslint/type-utils@8.70.1'
-  - '@typescript-eslint/utils@8.70.1'
-  - html-encoding-sniffer@7.0.0
-  - jsdom@30.1.1
-  - typescript-eslint@8.70.1
-  - w3c-xmlserializer@6.0.0
+  - prettier@3.9.9
