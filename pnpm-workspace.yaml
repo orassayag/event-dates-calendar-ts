@@ -3,4 +3,7 @@ allowBuilds:
 ignoredBuiltDependencies:
   - esbuild
 minimumReleaseAgeExclude:
-  - prettier@3.9.9
+  - '@vitest/coverage-istanbul@5.0.2'
+  - '@vitest/mocker@5.0.2'
+  - '@vitest/spy@5.0.2'
+  - vitest@5.0.2
