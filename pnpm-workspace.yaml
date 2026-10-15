@@ -3,4 +3,8 @@ allowBuilds:
 ignoredBuiltDependencies:
   - esbuild
 minimumReleaseAgeExclude:
-  - eslint-plugin-prettier@5.5.7
+  - '@vitest/coverage-istanbul@5.0.5'
+  - '@vitest/mocker@5.0.5'
+  - '@vitest/spy@5.0.5'
+  - jsdom@30.1.3
+  - vitest@5.0.5
